@@ -19,8 +19,8 @@ au long terme, des joueurs motivés et prêts à faire avancer le clan épaulé 
 à prévoir d'autres événements internes au clan afin d'obtenir les résultats recherchés au niveau collectif et image
 du clan.
 
-🏰 MEMBRES DU CLAN AU 1/03/2022
-        🛂 19/50
+🏰 MEMBRES DU CLAN AU {date}
+        🛂 {clan_members}/50
         🎁 +/- 1,5K donations/joueur
 📋 PRÉREQUIS
         ⭐ Pas de village préma
