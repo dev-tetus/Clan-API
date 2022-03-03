@@ -45,7 +45,7 @@ def send_message(driver, text):
 def get_driver():
     
     
-    if sys.platform == 'win32':
+    if sys.platform == 'linux':
         chrome_options = webdriver.ChromeOptions()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("no-sandbox")
