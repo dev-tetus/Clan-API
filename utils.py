@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.edge.service import Service as EdgeService
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -46,14 +47,13 @@ def get_driver():
     
     
     if sys.platform == 'linux':
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options = webdriver.ChromeOptions()
+        chrome_options = ChromeOptions()
         chrome_options.add_argument("no-sandbox")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=800,600")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        ser=ChromeService(executable_path="./chromedriver")
-        chrome_driver=webdriver.Chrome(service=ser)
+        # ser=ChromeService(executable_path="./chromedriver")
+        chrome_driver=webdriver.Chrome(chrome_options=chrome_options)
         return chrome_driver
     # else:
     #     edge_options = EdgeOptions()
