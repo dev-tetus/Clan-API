@@ -1,9 +1,10 @@
 import sys
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.edge.options import Options as EdgeOptions
-from selenium.webdriver.edge.service import Service
+from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -45,12 +46,13 @@ def get_driver():
     
     
     if sys.platform == 'linux':
-        firefox_options=FirefoxOptions()
-        return webdriver.Firefox()
+        ser=ChromeService(executable_path="./chromedriver")
+        chrome_driver=webdriver.Chrome(service=ser)
+        return chrome_driver
     else:
         edge_options = EdgeOptions()
         edge_options.add_experimental_option("detach", True)
-        ser = Service(executable_path="./msedgedriver.exe")
+        ser = EdgeService(executable_path="./msedgedriver.exe")
         return webdriver.Edge(service=ser, options=edge_options)
      
      
