@@ -1,3 +1,4 @@
+import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -7,6 +8,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 from clash_data import ClashData
+from credentials import get_credentials
+
+
+def press_server(driver, element):
+    webdriver.ActionChains(driver).click_and_hold(element).perform()
+    webdriver.ActionChains(driver).release().perform()
 
 
 def get_server_names():
@@ -18,13 +25,13 @@ def get_server_names():
 
 
 def find_servers(driver, server_names):
-    servers_to_send = [()]
+    servers_to_send = []
     servers_availables = WebDriverWait(driver, 20).until(
     EC.presence_of_all_elements_located((By.XPATH, "//div[@role='treeitem']")))
 
     for server_clickable in servers_availables:
         if server_clickable.get_attribute("aria-label").strip() in server_names:
-            servers_to_send.append(server_clickable.get_attribute("aria-label").strip(),server_clickable)
+            servers_to_send.append((server_clickable.get_attribute("aria-label").strip(), server_clickable))
     return servers_to_send
 
 def send_message(driver, text):
@@ -36,20 +43,25 @@ def send_message(driver, text):
 def get_driver():
     options = Options()
     options.add_experimental_option("detach", True)
-    ser = Service(executable_path="./msedgedriver.exe")
+    if sys.platform == 'linux':
+        ser = Service(executable_path="./msedgedriver")
+    else:
+        ser = Service(executable_path="./msedgedriver.exe")
     return webdriver.Edge(service=ser, options=options)
+     
+
 
 def do_login(driver):
     driver.find_element(by=By.NAME, value='email').send_keys(get_credentials()['username'])
     driver.find_element(by=By.NAME, value='password').send_keys(get_credentials()['password'])
+    # button = WebDriverWait(driver, 20).until(
+    #     EC.presence_of_all_elements_located((By.CSS_SELECTOR, r'#app-mount > div.app-3xd6d0 > div > div > div > div > form > div > div > div.mainLoginContainer-wHmAjP > div.block-3uVSn4.marginTop20-2T8ZJx > button.marginBottom8-emkd0_.button-1cRKG6.button-f2h6uQ.lookFilled-yCfaCM.colorBrand-I6CyqQ.sizeLarge-3mScP9.fullWidth-fJIsjq.grow-2sR_-F')))
+    # button = driver.find_element(by=By.CSS_SELECTOR, value=r'#app-mount > div.app-3xd6d0 > div > div > div > div > form > div > div > div.mainLoginContainer-wHmAjP > div.block-3uVSn4.marginTop20-2T8ZJx > button.marginBottom8-emkd0_.button-1cRKG6.button-f2h6uQ.lookFilled-yCfaCM.colorBrand-I6CyqQ.sizeLarge-3mScP9.fullWidth-fJIsjq.grow-2sR_-F')
     for element in driver.find_elements(By.TAG_NAME, "button"):
         if element.text == "Iniciar sesión":
-            button = element
+             button = element
     webdriver.ActionChains(driver).click_and_hold(button).perform()
     webdriver.ActionChains(driver).release().perform()
-
-
-
 
 
 def get_text_with_data():

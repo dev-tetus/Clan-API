@@ -12,13 +12,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 import utils
 
 
-
-
 if __name__ == '__main__':
 
     url = "https://www.discord.com/login"
-    credentials = utils.get_credentials()
-    print(credentials['username'])
     servers = utils.get_server_names()
 
     driver=utils.get_driver()
@@ -29,22 +25,22 @@ if __name__ == '__main__':
     utils.do_login(driver)
     sleep(2)
     servers_to_access = utils.find_servers(driver,servers)
-    print(servers_to_access)
-    # for server in servers:
-    #     if 'https://discord.com/login' in driver.current_url:
-    #         utils.do_login_(driver)
-    #     driver.get(server[1])
-    #     sleep(6)
-    #                 #driver.execute_script(f'alert(\'{server[1]}\');')
-    #     sleep(2)
-    #                 #driver.switch_to.alert.accept()
-    #     if server[0] == 'La Souce Family':
+    # print(servers_to_access)
 
-    #         print('Hello')
-        
-    #         sleep(5)
+    for server in servers_to_access:
+        if 'https://discord.com/login' in driver.current_url:
+            utils.do_login_(driver)
+                    #driver.execute_script(f'alert(\'{server[1]}\');')
+        sleep(2)
+                    #driver.switch_to.alert.accept()
+        if server[0] == 'La Souce Family':
+            utils.press_server(driver, server[1])
+            driver.execute_script(f'alert("Hola mi bombon de melocotón");')
+            sleep(2)
+            driver.switch_to.alert.accept()
+
     
-    # driver.quit()
+    driver.quit()
 
 
 
