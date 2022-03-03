@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.edge.service import Service as EdgeService
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
@@ -45,15 +45,21 @@ def send_message(driver, text):
 def get_driver():
     
     
-    if sys.platform == 'linux':
+    if sys.platform == 'win32':
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("no-sandbox")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--window-size=800,600")
+        chrome_options.add_argument("--disable-dev-shm-usage")
         ser=ChromeService(executable_path="./chromedriver")
         chrome_driver=webdriver.Chrome(service=ser)
         return chrome_driver
-    else:
-        edge_options = EdgeOptions()
-        edge_options.add_experimental_option("detach", True)
-        ser = EdgeService(executable_path="./msedgedriver.exe")
-        return webdriver.Edge(service=ser, options=edge_options)
+    # else:
+    #     edge_options = EdgeOptions()
+    #     edge_options.add_experimental_option("detach", True)
+    #     ser = EdgeService(executable_path="./msedgedriver.exe")
+    #     return webdriver.Edge(service=ser, options=edge_options)
      
      
 
