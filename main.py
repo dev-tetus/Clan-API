@@ -18,6 +18,8 @@ if __name__ == '__main__':
     servers = utils.get_server_names()
 
     driver=utils.get_driver()
+    print(driver)
+    driver.quit()
     
     driver.maximize_window()
     driver.get("https://www.discord.com/login")

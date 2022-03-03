@@ -1,4 +1,3 @@
-from urllib import response
 import requests
 import credentials
 import pandas as pd
@@ -42,7 +41,7 @@ class ClashData():
             player_tags.append((player_tag["name"], player_tag["tag"].replace("#","%23")))
         return player_tags
         
-    def get_player_power_attack(self, player_compos=None, limit=None):
+    def get_players_power_attack(self, player_compos=None, limit=None):
         player_tags = self.get_player_tags(limit)
         player_levels = {}
 
@@ -57,10 +56,12 @@ class ClashData():
             }
 
         df = pd.DataFrame.from_dict(player_levels)
-        df.to_excel('./player_levels.xlsx', index=False)
+        
+        # df.to_excel('./player_levels.xlsx', index=False)
         return df
 
-    def get_percentage(self):
+    def get_percentage(self,player):
+        
         pass
         
 #Debug
