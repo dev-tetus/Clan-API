@@ -2,8 +2,9 @@ import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.edge.options import Options
+from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.edge.service import Service
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
@@ -41,13 +42,17 @@ def send_message(driver, text):
 
 
 def get_driver():
-    options = Options()
-    options.add_experimental_option("detach", True)
+    
+    
     if sys.platform == 'linux':
-        ser = Service(executable_path="./msedgedriver")
+        firefox_options=FirefoxOptions()
+        return webdriver.Firefox()
     else:
+        edge_options = EdgeOptions()
+        edge_options.add_experimental_option("detach", True)
         ser = Service(executable_path="./msedgedriver.exe")
-    return webdriver.Edge(service=ser, options=options)
+        return webdriver.Edge(service=ser, options=edge_options)
+     
      
 
 
