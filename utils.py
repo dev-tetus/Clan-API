@@ -1,5 +1,6 @@
 import sys
 from selenium import webdriver
+
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -26,6 +27,13 @@ def get_server_names():
         ('La Souce Family')
     ]
 
+def find_channels(driver):
+    channels= []
+    channels_availables = WebDriverWait(driver, 20).until(
+    EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div/a/div[2]/div")))
+    for channel_clickable in channels_availables:
+        channels.append((channel_clickable.text,channel_clickable))
+    return channels
 
 def find_servers(driver, server_names):
     servers_to_send = []
@@ -39,13 +47,12 @@ def find_servers(driver, server_names):
 
 def send_message(driver, text):
     action = webdriver.ActionChains(driver)
-    input_box = driver.find_element(by=By.CSS_SELECTOR, value=r'#app-mount > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > div > div > div.chat-2ZfjoI > div.content-1jQy2l > main > form > div > div > div > div.scrollableContainer-15eg7h.webkit-QgSAqd > div > div.textArea-2CLwUE.textAreaSlate-9-y-k2.slateContainer-3x9zil > div > div > span > span > span')
-    action.send_keys_to_element(input_box, text).key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
+    # input_box = driver.find_element(by=By.CSS_SELECTOR, value=r'#app-mount > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > div > div > div.chat-2ZfjoI > div.content-1jQy2l > main > form > div > div > div > div.scrollableContainer-15eg7h.webkit-QgSAqd > div > div.textArea-2CLwUE.textAreaSlate-9-y-k2.slateContainer-3x9zil > div.markup-eYLPri.slateTextArea-27tjG0.fontSize16Padding-XoMpjI > div')
+    action.send_keys(f'{text}').key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
 
+#app-mount > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > div > div > div.chat-2ZfjoI > div.content-1jQy2l > main > form > div > div > div > div.scrollableContainer-15eg7h.webkit-QgSAqd > div > div.textArea-2CLwUE.textAreaSlate-9-y-k2.slateContainer-3x9zil > div.markup-eYLPri.slateTextArea-27tjG0.fontSize16Padding-XoMpjI > div > span > span > span
 
 def get_driver():
-    
-    
     if sys.platform == 'linux':
         chrome_options = ChromeOptions()
         chrome_options.add_argument("no-sandbox")
@@ -55,11 +62,11 @@ def get_driver():
         # ser=ChromeService(executable_path="./chromedriver")
         chrome_driver=webdriver.Chrome(chrome_options=chrome_options)
         return chrome_driver
-    # else:
-    #     edge_options = EdgeOptions()
-    #     edge_options.add_experimental_option("detach", True)
-    #     ser = EdgeService(executable_path="./msedgedriver.exe")
-    #     return webdriver.Edge(service=ser, options=edge_options)
+    else:
+        edge_options = EdgeOptions()
+        edge_options.add_experimental_option("detach", True)
+        ser = EdgeService(executable_path="./msedgedriver.exe")
+        return webdriver.Edge(service=ser, options=edge_options)
      
      
 

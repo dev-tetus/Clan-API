@@ -1,7 +1,12 @@
+from urllib import response
 import requests
 import credentials
 import pandas as pd
+import numpy as np
 import urllib
+
+
+
 
 
 class ClashData():
@@ -41,31 +46,30 @@ class ClashData():
             player_tags.append((player_tag["name"], player_tag["tag"].replace("#","%23")))
         return player_tags
         
-    def get_players_power_attack(self, player_compos=None, limit=None):
-        player_tags = self.get_player_tags(limit)
-        player_levels = {}
-
-        for player in player_tags:
-            response_levels = requests.get(f'{self.credentials["base_url"]}/players/{player[1]}', headers=self.headers)
     
-            player_levels[response_levels.json()["name"]] = {
-                "town_hall": response_levels.json()["townHallLevel"],
-                "troops": response_levels.json()["troops"],
-                "heroes": response_levels.json()["heroes"],
-                "spells": response_levels.json()["spells"]
-            }
 
-        df = pd.DataFrame.from_dict(player_levels)
-        
-        # df.to_excel('./player_levels.xlsx', index=False)
-        return df
+    def get_player_info(self,tag=None, DEBUG=False):
+        #8YQCLQYG   ;   #2C2U9QCP
+        response = requests.get(f'{self.credentials["base_url"]}/players/{"%238YQCLQYG" if DEBUG else tag }', headers=self.headers)
+        player_troop_levels_dataframe = pd.DataFrame(columns=['name', 'level', 'maxLevel', 'village'])
+        username_dataframe = pd.DataFrame([np.array([response.json()['name'], response.json()['townHallLevel']])],columns=['username', 'townHallLevel'])
 
-    def get_percentage(self,player):
+        for troop in response.json()['troops']:
+            troop_df = pd.DataFrame.from_records(troop, index=[0])
+            player_troop_levels_dataframe= pd.concat([player_troop_levels_dataframe, troop_df],ignore_index=True, axis=0)
+            player_troop_levels_dataframe= player_troop_levels_dataframe[player_troop_levels_dataframe['village'] == 'home']
+
+        player_troop_levels_dataframe= pd.merge(player_troop_levels_dataframe, username_dataframe, how='cross')
+        player_troop_levels_dataframe= player_troop_levels_dataframe[player_troop_levels_dataframe.columns.difference(['superTroopIsActive'])]
         
-        pass
+        return player_troop_levels_dataframe
+
         
 #Debug
 if __name__ == '__main__':
-    
     cd = ClashData()
-    print(cd.get_player_power_attack())
+    print(cd.get_players_power_attack(DEBUG=True))
+    '''
+    print(cd.get_player_info(DEBUG=True))
+
+    '''

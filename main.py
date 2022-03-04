@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     driver=utils.get_driver()
     print(driver)
-    driver.quit()
+    
     
     driver.maximize_window()
     driver.get("https://www.discord.com/login")
@@ -37,9 +37,24 @@ if __name__ == '__main__':
                     #driver.switch_to.alert.accept()
         if server[0] == 'La Souce Family':
             utils.press_server(driver, server[1])
-            driver.execute_script(f'alert("Hola mi bombon de melocotón");')
-            sleep(2)
+            driver.execute_script(r'alert("J\'envoie une alerte!!!");')
+            sleep(3)
             driver.switch_to.alert.accept()
+            channels = utils.find_channels(driver)
+            print(channels)
+            for channel in channels:
+                if channel[0] == 'général':
+                    utils.press_server(driver, channel[1])
+                    sleep(2)
+                    utils.send_message(driver,"Groooos pdd")
+            
+
+
+            sleep(1,5)
+            # driver.get("https://discord.com/channels/677188056616402945/677188057417646113")
+            if 'https://discord.com/login' in driver.current_url:
+                utils.do_login(driver)
+            
 
     
     driver.quit()
