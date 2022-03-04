@@ -1,4 +1,5 @@
 discord-env/
 
+__pycache__/
 credentials.txt
 ./player_level.json
