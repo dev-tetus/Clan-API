@@ -57,8 +57,15 @@ class ClashData():
         for troop in response.json()['troops']:
             troop_df = pd.DataFrame.from_records(troop, index=[0])
             player_troop_levels_dataframe= pd.concat([player_troop_levels_dataframe, troop_df],ignore_index=True, axis=0)
-            player_troop_levels_dataframe= player_troop_levels_dataframe[player_troop_levels_dataframe['village'] == 'home']
+            
+        for spell in response.json()['spells']:
+            spell_df = pd.DataFrame.from_records(spell, index=[0])
+            player_troop_levels_dataframe=pd.concat([player_troop_levels_dataframe, spell_df],ignore_index=True, axis=0)
+        for hero in response.json()['heroes']:
+            hero_df= pd.DataFrame.from_records(hero, index=[0])
+            player_troop_levels_dataframe=pd.concat([player_troop_levels_dataframe, hero_df],ignore_index=True, axis=0)
 
+        player_troop_levels_dataframe= player_troop_levels_dataframe[player_troop_levels_dataframe['village'] == 'home']
         player_troop_levels_dataframe= pd.merge(player_troop_levels_dataframe, username_dataframe, how='cross')
         player_troop_levels_dataframe= player_troop_levels_dataframe[player_troop_levels_dataframe.columns.difference(['superTroopIsActive'])]
         
@@ -68,7 +75,7 @@ class ClashData():
 #Debug
 if __name__ == '__main__':
     cd = ClashData()
-    print(cd.get_players_power_attack(DEBUG=True))
+    print(cd.get_player_info(DEBUG=True))
     '''
     print(cd.get_player_info(DEBUG=True))
 
