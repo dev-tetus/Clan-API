@@ -21,6 +21,7 @@ class ClashData():
 
     def get_clan_members(self):
         response= requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}/members', headers=self.headers)
+        print(response)
         return response.json()["items"]
 
     def get_clan_points(self):
@@ -51,12 +52,13 @@ class ClashData():
     def get_player_info(self,tag=None, DEBUG=False):
         #8YQCLQYG   ;   #2C2U9QCP
         response = requests.get(f'{self.credentials["base_url"]}/players/{"%238YQCLQYG" if DEBUG else tag }', headers=self.headers)
+        
         player_troop_levels_dataframe = pd.DataFrame(columns=['name', 'level', 'maxLevel', 'village'])
         username_dataframe = pd.DataFrame([np.array([response.json()['name'], response.json()['townHallLevel']])],columns=['username', 'townHallLevel'])
 
-        for troop in response.json()['troops']:
-            troop_df = pd.DataFrame.from_records(troop, index=[0])
-            player_troop_levels_dataframe= pd.concat([player_troop_levels_dataframe, troop_df],ignore_index=True, axis=0)
+        # for troop in response.json()['troops']:
+        #     troop_df = pd.DataFrame.from_records(troop, index=[0])
+        #     player_troop_levels_dataframe= pd.concat([player_troop_levels_dataframe, troop_df],ignore_index=True, axis=0)
             
         for spell in response.json()['spells']:
             spell_df = pd.DataFrame.from_records(spell, index=[0])
