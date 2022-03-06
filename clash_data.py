@@ -56,13 +56,14 @@ class ClashData():
         player_troop_levels_dataframe = pd.DataFrame(columns=['name', 'level', 'maxLevel', 'village'])
         username_dataframe = pd.DataFrame([np.array([response.json()['name'], response.json()['townHallLevel']])],columns=['username', 'townHallLevel'])
 
-        # for troop in response.json()['troops']:
-        #     troop_df = pd.DataFrame.from_records(troop, index=[0])
-        #     player_troop_levels_dataframe= pd.concat([player_troop_levels_dataframe, troop_df],ignore_index=True, axis=0)
+        for troop in response.json()['troops']:
+            troop_df = pd.DataFrame.from_records(troop, index=[0])
+            player_troop_levels_dataframe= pd.concat([player_troop_levels_dataframe, troop_df],ignore_index=True, axis=0)
             
         for spell in response.json()['spells']:
             spell_df = pd.DataFrame.from_records(spell, index=[0])
             player_troop_levels_dataframe=pd.concat([player_troop_levels_dataframe, spell_df],ignore_index=True, axis=0)
+            
         for hero in response.json()['heroes']:
             hero_df= pd.DataFrame.from_records(hero, index=[0])
             player_troop_levels_dataframe=pd.concat([player_troop_levels_dataframe, hero_df],ignore_index=True, axis=0)
