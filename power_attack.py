@@ -1,6 +1,7 @@
 import os
 from zlib import DEF_BUF_SIZE
 import pandas as pd
+import numpy as np
 import json
 import credentials
 
@@ -63,14 +64,24 @@ class ClanPowerAttack():
         player_max_lab_and_heroes=pd.merge(troops_max_levels_per_lab,player_max_lab_and_heroes, how='right', left_on=['LaboratoryLevel','Name'], right_on=['LaboratoryLevel','name'])\
             .rename(columns={'TroopLevel':'MaxLevel','level':'ActualLevel','name':'TroopName','townHallLevel':'TownHall'}).drop(columns=['Name'])
 
-        player_max_lab_and_heroes=player_max_lab_and_heroes.sort_values(by='username')
+        # player_max_lab_and_heroes=player_max_lab_and_heroes.sort_values(by='username')
         
-        # players_with_max_troop_level['PowerAttack'] = players_with_max_troop_level.apply(lambda row:(int(row.ActualLevel)/int(row.MaxLevel))*100, axis=1)
-        #SPELLS FOR TH
+                                                                                                    # players_with_max_troop_level['PowerAttack'] = players_with_max_troop_level.apply(lambda row:(int(row.ActualLevel)/int(row.MaxLevel))*100, axis=1)
+                                                                                                    #SPELLS FOR TH
         player_max_lab_and_heroes=pd.merge(spells_max_levels_per_lab,player_max_lab_and_heroes, how='right', left_on=['Name'], right_on=['TroopName'])
+        # unique_spells =player_max_lab_and_heroes['TroopName'].unique()
+        # player_max_lab_and_heroes['Name'] =player_max_lab_and_heroes['Name'].unique()
         
+        # max_spells_dataframe = pd.DataFrame()
+        # for spell in unique_spells:
+        #     spell_df = player_max_lab_and_heroes[player_max_lab_and_heroes['Name']==spell]
+        #     spell_df =spell_df[spell_df['SpellLevel']==spell_df['SpellLevel'].max()]
+        #     max_spells_dataframe = pd.concat([max_spells_dataframe, spell_df])
         
+        # return player_max_lab_and_heroes['Name']
+        # player_max_lab_and_heroes = player_max_lab_and_heroes.replace(np.NaN,'')
         
+        player_max_lab_and_heroes=player_max_lab_and_heroes.groupby('Name')
         
         
         return player_max_lab_and_heroes

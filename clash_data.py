@@ -47,8 +47,7 @@ class ClashData():
             player_tags.append((player_tag["name"], player_tag["tag"].replace("#","%23")))
         return player_tags
         
-    
-
+        
     def get_player_info(self,tag=None, DEBUG=False):
         #8YQCLQYG   ;   #2C2U9QCP
         response = requests.get(f'{self.credentials["base_url"]}/players/{"%238YQCLQYG" if DEBUG else tag }', headers=self.headers)
