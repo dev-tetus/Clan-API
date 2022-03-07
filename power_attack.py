@@ -41,6 +41,11 @@ class ClanPowerAttack():
 
     '''
         Returns DataFrame with cols=[BuildingLevel townHallLevel username]
+        Should return 3 independent dataframes:
+            - Troops
+            - Spells
+            - Heroes
+
     '''
     def get_max_levels_for_townhall(self,tag=None, DEBUG=False):
         max_lab__per_townhall_dataframe = self.get_lab_levels()
