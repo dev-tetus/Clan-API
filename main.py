@@ -23,6 +23,9 @@ if __name__ == '__main__':
     print(driver)
 
     if sys.platform == 'linux':
+        driver.get("https://www.google.com")
+        print(driver.page_source)
+
         driver.quit()
         exit()
     
