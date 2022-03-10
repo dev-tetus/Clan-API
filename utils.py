@@ -54,13 +54,14 @@ def send_message(driver, text):
 
 def get_driver():
     if sys.platform == 'linux':
+        print("Hello")
         chrome_options = ChromeOptions()
         chrome_options.add_argument("no-sandbox")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=800,600")
         chrome_options.add_argument("--disable-dev-shm-usage")
         # ser=ChromeService(executable_path="./chromedriver")
-        chrome_driver=webdriver.Chrome(chrome_options=chrome_options)
+        chrome_driver = webdriver.Chrome()
         return chrome_driver
     else:
         edge_options = EdgeOptions()

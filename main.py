@@ -1,5 +1,6 @@
 from datetime import datetime
 from os import path
+import sys
 from time import sleep
 
 from selenium import webdriver
@@ -19,6 +20,9 @@ if __name__ == '__main__':
 
     driver=utils.get_driver()
     print(driver)
+
+    if sys.platform == 'linux':
+        driver.quit()
     
     
     driver.maximize_window()

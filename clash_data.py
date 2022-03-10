@@ -6,9 +6,6 @@ import numpy as np
 import urllib
 
 
-
-
-
 class ClashData():
     def __init__(self):
         self.credentials = credentials.get_credentials()
@@ -47,11 +44,9 @@ class ClashData():
             player_tags.append((player_tag["name"], player_tag["tag"].replace("#","%23")))
         return player_tags
         
-        
     def get_player_info(self,tag=None, DEBUG=False):
         #8YQCLQYG   ;   #2C2U9QCP
-        response = requests.get(f'{self.credentials["base_url"]}/players/{"%238YQCLQYG" if DEBUG else tag }', headers=self.headers)
-        
+        response = requests.get(f'{self.credentials["base_url"]}/players/{"%23982C28QQ" if DEBUG else tag }', headers=self.headers)
         player_troop_levels_dataframe = pd.DataFrame(columns=['name', 'level', 'maxLevel', 'village'])
         username_dataframe = pd.DataFrame([np.array([response.json()['name'], response.json()['townHallLevel']])],columns=['username', 'townHallLevel'])
 
@@ -70,14 +65,16 @@ class ClashData():
         player_troop_levels_dataframe= player_troop_levels_dataframe[player_troop_levels_dataframe['village'] == 'home']
         player_troop_levels_dataframe= pd.merge(player_troop_levels_dataframe, username_dataframe, how='cross')
         player_troop_levels_dataframe= player_troop_levels_dataframe[player_troop_levels_dataframe.columns.difference(['superTroopIsActive'])]
-        
         return player_troop_levels_dataframe
 
         
 #Debug
 if __name__ == '__main__':
     cd = ClashData()
-    print(cd.get_player_info(DEBUG=True))
+    # print(cd.get_player_info(DEBUG=True))
+
+    print(cd.get_troop_donation_avg())
+    
     '''
     print(cd.get_player_info(DEBUG=True))
 
