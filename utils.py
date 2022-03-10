@@ -61,6 +61,7 @@ def get_driver():
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=800,600")
         chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--headless")
         # ser=ChromeService(executable_path="./chromedriver")
         service = ChromiumService(executable_path="/usr/lib/chromium-browser/chromedriver")
         chrome_driver = webdriver.Chrome(service=service, options=chrome_options)
