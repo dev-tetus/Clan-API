@@ -1,12 +1,13 @@
 import sys
 from selenium import webdriver
 
-from selenium.webdriver.chrome.service import Service as ChromeService
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.chromium.service import ChromiumService
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -61,7 +62,8 @@ def get_driver():
         chrome_options.add_argument("--window-size=800,600")
         chrome_options.add_argument("--disable-dev-shm-usage")
         # ser=ChromeService(executable_path="./chromedriver")
-        chrome_driver = webdriver.Chrome()
+        service = ChromiumService(executable_path="/usr/lib/chromium-browser/chromedriver")
+        chrome_driver = webdriver.Chrome(service=service, options=chrome_options)
         return chrome_driver
     else:
         edge_options = EdgeOptions()
