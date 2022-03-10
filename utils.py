@@ -63,7 +63,7 @@ def get_driver():
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--headless")
         # ser=ChromeService(executable_path="./chromedriver")
-        service = ChromiumService(executable_path="/usr/lib/chromium-browser/chromedriver")
+        service = ChromiumService(executable_path="/usr/lib/chromium-browser/chromedriver", start_error_message='Service Error')
         chrome_driver = webdriver.Chrome(service=service, options=chrome_options)
         return chrome_driver
     else:
