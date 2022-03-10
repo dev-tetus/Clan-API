@@ -24,6 +24,7 @@ if __name__ == '__main__':
 
     if sys.platform == 'linux':
         driver.quit()
+        exit()
     
     
     driver.maximize_window()
