@@ -22,25 +22,20 @@ if __name__ == '__main__':
     driver=utils.get_driver()
     print(driver)
 
-    if sys.platform == 'linux':
-        driver.get("https://www.google.com")
-        print(driver.page_source)
-
-        driver.quit()
-        exit()
-    
     
     driver.maximize_window()
     driver.get("https://www.discord.com/login")
     
     utils.do_login(driver)
     sleep(2)
+    print('Login done...')
     servers_to_access = utils.find_servers(driver,servers)
-    # print(servers_to_access)
+    print(servers_to_access)
 
     for server in servers_to_access:
+        print(server)
         if 'https://discord.com/login' in driver.current_url:
-            utils.do_login_(driver)
+            utils.do_login(driver)
                     #driver.execute_script(f'alert(\'{server[1]}\');')
         sleep(2)
                     #driver.switch_to.alert.accept()
@@ -55,19 +50,21 @@ if __name__ == '__main__':
                 if channel[0] == 'général':
                     utils.press_server(driver, channel[1])
                     sleep(2)
-                    utils.send_message(driver,"Groooos pdd")
+                    if sys.platform == 'linux':
+                        utils.send_message(driver,"Message depuis raspberry!")
+                    else:
+                        utils.send_message(driver,"Groooos pdd")
             
 
 
-            sleep(1,5)
+            
             # driver.get("https://discord.com/channels/677188056616402945/677188057417646113")
-            if 'https://discord.com/login' in driver.current_url:
-                utils.do_login(driver)
+        
             
 
     
     driver.quit()
-
+    exit()
 
 
 

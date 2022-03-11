@@ -15,6 +15,7 @@ from datetime import datetime
 from clash_data import ClashData
 from credentials import get_credentials
 
+from time import sleep
 
 def press_server(driver, element):
     webdriver.ActionChains(driver).click_and_hold(element).perform()
@@ -30,8 +31,10 @@ def get_server_names():
 
 def find_channels(driver):
     channels= []
+    
     channels_availables = WebDriverWait(driver, 20).until(
     EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div/a/div[2]/div")))
+
     for channel_clickable in channels_availables:
         channels.append((channel_clickable.text,channel_clickable))
     return channels
@@ -41,6 +44,7 @@ def find_servers(driver, server_names):
     servers_availables = WebDriverWait(driver, 20).until(
     EC.presence_of_all_elements_located((By.XPATH, "//div[@role='treeitem']")))
 
+    sleep(2)
     for server_clickable in servers_availables:
         if server_clickable.get_attribute("aria-label").strip() in server_names:
             servers_to_send.append((server_clickable.get_attribute("aria-label").strip(), server_clickable))
@@ -82,7 +86,8 @@ def do_login(driver):
     #     EC.presence_of_all_elements_located((By.CSS_SELECTOR, r'#app-mount > div.app-3xd6d0 > div > div > div > div > form > div > div > div.mainLoginContainer-wHmAjP > div.block-3uVSn4.marginTop20-2T8ZJx > button.marginBottom8-emkd0_.button-1cRKG6.button-f2h6uQ.lookFilled-yCfaCM.colorBrand-I6CyqQ.sizeLarge-3mScP9.fullWidth-fJIsjq.grow-2sR_-F')))
     # button = driver.find_element(by=By.CSS_SELECTOR, value=r'#app-mount > div.app-3xd6d0 > div > div > div > div > form > div > div > div.mainLoginContainer-wHmAjP > div.block-3uVSn4.marginTop20-2T8ZJx > button.marginBottom8-emkd0_.button-1cRKG6.button-f2h6uQ.lookFilled-yCfaCM.colorBrand-I6CyqQ.sizeLarge-3mScP9.fullWidth-fJIsjq.grow-2sR_-F')
     for element in driver.find_elements(By.TAG_NAME, "button"):
-        if element.text == "Iniciar sesión":
+        print(element.text)
+        if element.text == "Login":
              button = element
     webdriver.ActionChains(driver).click_and_hold(button).perform()
     webdriver.ActionChains(driver).release().perform()
