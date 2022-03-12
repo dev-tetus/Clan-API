@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 from os import path
 import sys
@@ -15,7 +16,8 @@ import utils
 
 
 if __name__ == '__main__':
-
+    t = time.localtime()
+    print(time.strftime("%H:%M", t) == '22:43')
     text = utils.get_text_with_data()
 
     url = "https://www.discord.com/login"
@@ -23,51 +25,45 @@ if __name__ == '__main__':
 
     driver=utils.get_driver()
     print(driver)
-
-    
-    driver.maximize_window()
     driver.get("https://www.discord.com/login")
-    
+    driver.maximize_window()
     utils.do_login(driver)
-    sleep(2)
     print('Login done...')
     servers_to_access = utils.find_servers(driver,servers)
-    print(servers_to_access)
+    print(f'List of servers found:{servers_to_access}')
 
-    for server in servers_to_access:
-        print(server)
-        if 'https://discord.com/login' in driver.current_url:
-            utils.do_login(driver)
-                    #driver.execute_script(f'alert(\'{server[1]}\');')
-        sleep(2)
-                    #driver.switch_to.alert.accept()
-        if server[0] == 'La Souce Family':
-            utils.press_server(driver, server[1])
-            driver.execute_script(r'alert("J\'envoie une alerte!!!");')
-            sleep(3)
-            driver.switch_to.alert.accept()
-            channels = utils.find_channels(driver)
-            print(channels)
-            for channel in channels:
-                if channel[0] == 'a-l-abris-des-regards':
-                    utils.press_server(driver, channel[1])
+
+    try:
+        while True:
+            current_time=time.strftime("%H:%M:%S", time.localtime())
+            print("Son las ", current_time, ' horas')
+            if current_time == '23:02:00':
+                for server in servers_to_access:
+                    print(server)
+                    if 'https://discord.com/login' in driver.current_url:
+                        utils.do_login(driver)
+                                #driver.execute_script(f'alert(\'{server[1]}\');')
                     sleep(2)
-                    if sys.platform == 'linux':
-                        utils.send_message(driver,"Message depuis raspberry!")
-                    else:
-                        
-                        utils.send_message(driver,text)
-            
-
-
-            
-            # driver.get("https://discord.com/channels/677188056616402945/677188057417646113")
-        
-            
-
-    
-    driver.quit()
-    exit()
+                                #driver.switch_to.alert.accept()
+                    if server[0] == 'La Souce Family':
+                        utils.press_server(driver, server[1])
+                        driver.execute_script(r'alert("J\'envoie une alerte!!!");')
+                        sleep(3)
+                        driver.switch_to.alert.accept()
+                        channels = utils.find_channels(driver)
+                        print(channels)
+                        for channel in channels:
+                            if channel[0] == 'a-l-abris-des-regards':
+                                utils.press_server(driver, channel[1])
+                                sleep(2)
+                                if sys.platform == 'linux':
+                                    utils.send_message(driver,"Message depuis raspberry!")
+                                else:
+                                    
+                                    utils.send_message(driver,text)
+    except:
+        driver.quit()
+        exit()
 
 
 
