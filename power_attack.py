@@ -130,6 +130,7 @@ class ClanPowerAttack():
                                     player_info_dataframe.loc[(player_info_dataframe["TroopName"] == locked_troop), "MaxLevel"] = np.float64(new_level)
 
         player_info_dataframe= player_info_dataframe.dropna(subset=['ActualLab']).drop(columns=['TroopName'])
+        
         return player_info_dataframe
 
         # player_actual_lab = player_info_dataframe['ActualLab'].unique()[0]
@@ -454,12 +455,15 @@ class ClanPowerAttack():
 
         print(player_levels)
         clan_power_attack = player_levels['PowerAttack'].mean()
-
-        return clan_power_attack
+        clan_power_attack = np.format_float_positional(clan_power_attack, precision=4)
+        return np.float64(clan_power_attack) * np.float64(100)
 
 if __name__ == '__main__':
     cd = ClanPowerAttack()
-    print(cd.get_players_power_attack())
+    # print(cd.get_players_power_attack())
+    # print(cd.get_max_levels_for_townhall(tag='%2329JLCPYJG'))
+    # print(cd.get_max_levels_for_townhall(tag='%239OULLQGYQ'))
+    print(cd.get_max_levels_for_townhall(tag='%23Q22LLJYVU'))
 
 
  

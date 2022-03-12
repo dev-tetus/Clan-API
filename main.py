@@ -16,6 +16,8 @@ import utils
 
 if __name__ == '__main__':
 
+    text = utils.get_text_with_data()
+
     url = "https://www.discord.com/login"
     servers = utils.get_server_names()
 
@@ -47,13 +49,14 @@ if __name__ == '__main__':
             channels = utils.find_channels(driver)
             print(channels)
             for channel in channels:
-                if channel[0] == 'général':
+                if channel[0] == 'a-l-abris-des-regards':
                     utils.press_server(driver, channel[1])
                     sleep(2)
                     if sys.platform == 'linux':
                         utils.send_message(driver,"Message depuis raspberry!")
                     else:
-                        utils.send_message(driver,"Groooos pdd")
+                        
+                        utils.send_message(driver,text)
             
 
 

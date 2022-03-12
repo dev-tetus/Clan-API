@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import urllib
 
-
 class ClashData():
     def __init__(self):
         self.credentials = credentials.get_credentials()
@@ -13,8 +12,18 @@ class ClashData():
             'content-type': 'application/json',
             'Authorization': 'Bearer {api}'.format(api=self.credentials["api_key"])
         }
-        self.members = self.get_clan_members().__len__()
+        
+    def get_required_trophies(self):
+        response = requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}', headers=self.headers)
+        return response.json()['requiredTrophies']
+    
+    def get_required_townhall(self):
+        response = requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}', headers=self.headers)
+        return response.json()['requiredTownhallLevel']
 
+    def get_clan_points(self):
+        response = requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}', headers=self.headers)
+        return response.json()['clanPoints']
 
     def get_clan_members(self):
         response= requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}/members', headers=self.headers)
@@ -32,9 +41,10 @@ class ClashData():
     def get_troop_donation_avg(self, limit=None):
         donations = 0
         response= requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}/members?limit={limit if limit else 50}', headers=self.headers)
+        members = self.get_clan_members().__len__()
         for player in response.json()["items"]:
             donations += player["donations"]
-        avg = donations/limit if limit else donations/self.members
+        avg = int(donations/limit if limit else donations/members)
         return avg
 
     def get_player_tags(self, limit=None):
@@ -72,6 +82,8 @@ class ClashData():
 if __name__ == '__main__':
     cd = ClashData()
     # print(cd.get_player_info(DEBUG=True))
+
+    # print(cd.get_clan_points())
 
     print(cd.get_troop_donation_avg())
     

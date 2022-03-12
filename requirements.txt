@@ -6,3 +6,4 @@ requests
 pandas
 ipykernel
 numpy
+pyperclip
