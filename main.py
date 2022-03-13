@@ -13,11 +13,13 @@ from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import WebDriverWait
 
 import utils
-
+channels=[
+    'recrutement-clan',
+    'recrutement_clans'
+]
 
 if __name__ == '__main__':
     t = time.localtime()
-    print(time.strftime("%H:%M", t) == '22:43')
     text = utils.get_text_with_data()
 
     url = "https://www.discord.com/login"
@@ -37,33 +39,47 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if current_time == '23:02:00':
+            if current_time == '18:00:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:
                         utils.do_login(driver)
                                 #driver.execute_script(f'alert(\'{server[1]}\');')
-                    sleep(2)
+                    
                                 #driver.switch_to.alert.accept()
-                    if server[0] == 'La Souce Family':
-                        utils.press_server(driver, server[1])
-                        driver.execute_script(r'alert("J\'envoie une alerte!!!");')
-                        sleep(3)
-                        driver.switch_to.alert.accept()
-                        channels = utils.find_channels(driver)
-                        print(channels)
-                        for channel in channels:
-                            if channel[0] == 'a-l-abris-des-regards':
-                                utils.press_server(driver, channel[1])
-                                sleep(2)
-                                if sys.platform == 'linux':
-                                    utils.send_message(driver,"Message depuis raspberry!")
-                                else:
-                                    
-                                    utils.send_message(driver,text)
+                    if server in servers:
+                        
+                        if server[0] == 'La Souce Family':
+                            utils.press_server(driver, server[1])
+                            channels = utils.find_channels(driver)
+                            for channel in channels:
+                                if channel[0] == 'a-l-abris-des-regards' or  channel[0] == 'général':
+                                    utils.press_server(driver, channel[1])
+                                    sleep(2)
+                                    if sys.platform == 'linux':
+                                        utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
+                                    else:
+                                        
+                                        utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
+                        else:
+                            utils.press_server(driver, server[1])
+                            channels = utils.find_channels(driver)
+                            print(channels)
+                            for channel in channels:
+                                if channel[0] in channels:
+                                    utils.press_server(driver, channel[1])
+                                    sleep(2)
+                                    if sys.platform == 'linux':
+                                        utils.send_message(driver,text)
+                                    else:
+                                        
+                                        utils.send_message(driver,text)
     except:
+        print('Exception...')
         driver.quit()
         exit()
+    # driver.quit()
+    # exit()
 
 
 

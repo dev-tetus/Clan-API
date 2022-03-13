@@ -55,7 +55,7 @@ __***Calculé avec l'API de Clash of Clans***__
         :house: HDV {required_townhall}
         :trophy: {required_trophies}
         :star: Actif
-        :star: Donneur généreux
+        :star: Donnateur généreux
 
 
 https://link.clashofclans.com/fr?action=OpenClanProfile&tag=2LV9J8VLQ
