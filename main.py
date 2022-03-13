@@ -67,7 +67,6 @@ if __name__ == '__main__':
                             for channel in channels_server:
                                 if channel[0] in channels:
                                     utils.press_server(driver, channel[1])
-                                    sleep(2)
                                     if sys.platform == 'linux':
                                         utils.send_message(driver,text)
                                     else:
