@@ -43,7 +43,7 @@ text = """
      raison qu'ils considèrent, ce que nous exigeons est que ceux qui ont précédemment formalisé 
      qu'ils veulent participer à tout événement en cours, s'engagent et participent à l'événement. 
      Nous sommes 5 personnes à gérer le clan, donc nous voyons toujours ceux qui sont engagés dans 
-     le clan et nous le leur ferons toujours savoir.
+     celui-ci et nous leur ferons toujours savoir.
 
 :european_castle: STATS DU CLAN AU {date}
 __***Calculé avec l'API de Clash of Clans***__

@@ -39,7 +39,7 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if current_time == '20:10:00':
+            if current_time == '20:30:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:
@@ -58,23 +58,19 @@ if __name__ == '__main__':
                                     
                                     if sys.platform == 'linux':
                                         utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
-                                        utils.send_message(driver, text)
                                     else:
                                         
                                         utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
                         else:
-                            pass
                             utils.press_server(driver, server[1])
-                            channels = utils.find_channels(driver)
-                            print(channels)
-                            for channel in channels:
+                            channels_server = utils.find_channels(driver)
+                            for channel in channels_server:
                                 if channel[0] in channels:
                                     utils.press_server(driver, channel[1])
                                     sleep(2)
                                     if sys.platform == 'linux':
                                         utils.send_message(driver,text)
                                     else:
-                                        
                                         utils.send_message(driver,text)
     except:
         print('Exception...')
