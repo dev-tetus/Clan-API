@@ -39,7 +39,7 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if current_time == '14:19:00':
+            if current_time == '19:37:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:

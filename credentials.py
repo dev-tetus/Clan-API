@@ -1,7 +1,7 @@
 
 
 def get_credentials():
-    f = open("credentials.txt", "r")
+    f = open(r'/home/ubuntu/discord-scraping/credentials.txt', 'r')
     content = f.readlines()
     credentials = {
         'username': content[0].split(' ')[1].strip(),
