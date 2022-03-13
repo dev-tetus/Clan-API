@@ -39,7 +39,7 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if current_time == '18:00:00':
+            if current_time == '14:19:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:
@@ -47,7 +47,7 @@ if __name__ == '__main__':
                                 #driver.execute_script(f'alert(\'{server[1]}\');')
                     
                                 #driver.switch_to.alert.accept()
-                    if server in servers:
+                    if server[0] in servers:
                         
                         if server[0] == 'La Souce Family':
                             utils.press_server(driver, server[1])
@@ -62,6 +62,7 @@ if __name__ == '__main__':
                                         
                                         utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
                         else:
+                            pass
                             utils.press_server(driver, server[1])
                             channels = utils.find_channels(driver)
                             print(channels)
