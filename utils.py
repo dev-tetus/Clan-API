@@ -51,9 +51,9 @@ __***Calculé avec l'API de Clash of Clans***__
         :trophy: {trophies} points du clan
         :gift: {donations_average} donations/joueur
         :fire: {clan_power_attack} % (Puissance d'attaque du clan)
-📋 PRÉREQUIS
-        :house: HDV {required_townhall}
-        :trophy: {required_trophies}
+:clipboard: PRÉREQUIS
+        :house: HDV {required_townhall} minimum
+        :trophy: {required_trophies} trophées minimum
         :star: Actif
         :star: Donnateur généreux
 
@@ -145,8 +145,6 @@ def get_text_with_data():
     required_townhall= cd.get_required_townhall()
     required_trophies= cd.get_required_trophies()
     
-    # with open("text.txt","r", encoding="utf-8") as f2:
-    #     return f2.read()
     return text.format(date=datetime.now().strftime("%d/%m/%Y"),clan_members=str(clan_members),trophies=trophies,donations_average=donations_average,clan_power_attack=clan_power_attack, required_townhall=required_townhall,required_trophies=required_trophies)
             # .replace(r'{date}',datetime.now()\
             # .strftime("%d/%m/%Y"))\

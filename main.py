@@ -14,7 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 import utils
 channels=[
-    'recrutement-clan',
+    '📬・recrutement-clan',
     'recrutement_clans'
 ]
 
@@ -39,45 +39,42 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if current_time == '20:30:00':
+            if current_time == '15:57:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:
                         utils.do_login(driver)
-                                #driver.execute_script(f'alert(\'{server[1]}\');')
-                    
-                                #driver.switch_to.alert.accept()
+
                     if server[0] in servers:
                         
                         if server[0] == 'La Souce Family':
                             utils.press_server(driver, server[1])
                             channels = utils.find_channels(driver)
                             for channel in channels:
-                                if channel[0] == 'a-l-abris-des-regards' or  channel[0] == 'général':
+                                if channel[0] == 'a-l-abris-des-regards':
                                     utils.press_server(driver, channel[1])
                                     
                                     if sys.platform == 'linux':
                                         utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
                                     else:
-                                        
                                         utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
                         else:
                             utils.press_server(driver, server[1])
-                            channels_server = utils.find_channels(driver)
-                            for channel in channels_server:
+                            all_channels = utils.find_channels(driver)
+                            
+                            for channel in all_channels:
                                 if channel[0] in channels:
                                     utils.press_server(driver, channel[1])
                                     if sys.platform == 'linux':
                                         utils.send_message(driver,text)
                                     else:
                                         utils.send_message(driver,text)
+                                        print('yes')
     except:
         print('Exception...')
         driver.quit()
         exit()
-    # driver.quit()
-    # exit()
-
+    
 
 
     
