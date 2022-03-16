@@ -20,7 +20,7 @@ channels=[
 
 if __name__ == '__main__':
     t = time.localtime()
-    text = utils.get_text_with_data()
+    text = ''#utils.get_text_with_data()
 
     url = "https://www.discord.com/login"
     servers = utils.get_server_names()
@@ -66,7 +66,8 @@ if __name__ == '__main__':
                                 if channel[0] in channels:
                                     utils.press_server(driver, channel[1])
                                     if sys.platform == 'linux':
-                                        utils.send_message(driver,text)
+                                        print(f'Channel {channel[0]} is in channels list')
+                                        # utils.send_message(driver,text)
                                     else:
                                         utils.send_message(driver,text)
                                         print('yes')
