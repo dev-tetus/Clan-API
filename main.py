@@ -20,7 +20,7 @@ channels=[
 
 if __name__ == '__main__':
     t = time.localtime()
-    text = utils.get_text_with_data()
+    text = ''#utils.get_text_with_data()
 
     url = "https://www.discord.com/login"
     servers = utils.get_server_names()
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if current_time == '15:57:00':
+            if current_time == '11:08:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:
@@ -57,19 +57,23 @@ if __name__ == '__main__':
                                     if sys.platform == 'linux':
                                         utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
                                     else:
-                                        utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
+                                        pass
+                                        # utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
                         else:
                             utils.press_server(driver, server[1])
                             all_channels = utils.find_channels(driver)
-                            
+                            print(all_channels)
+                            driver.quit()
+                            exit()
                             for channel in all_channels:
                                 if channel[0] in channels:
                                     utils.press_server(driver, channel[1])
                                     if sys.platform == 'linux':
                                         utils.send_message(driver,text)
                                     else:
-                                        utils.send_message(driver,text)
-                                        print('yes')
+                                        print(f'Channel {channel[0]} is in channels list')
+                                        # utils.send_message(driver,text)
+                                        # print('yes')
     except:
         print('Exception...')
         driver.quit()
