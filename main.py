@@ -67,7 +67,8 @@ if __name__ == '__main__':
                                 if channel[0] in channels:
                                     utils.press_element(driver, channel[1])
                                     if sys.platform == 'linux':
-                                        utils.send_message(driver,text)
+                                        print(f'Channel {channel[0]} is in channels list')
+                                        # utils.send_message(driver,text)
                                     else:
                                         print(f'Channel {channel[0]} is in channels list')
                                         # utils.send_message(driver,text)
