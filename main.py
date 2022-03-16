@@ -39,7 +39,7 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if True:#current_time == '14:57:00':
+            if True:#current_time == '16:17:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:
@@ -62,8 +62,10 @@ if __name__ == '__main__':
                         else:
                             utils.press_element(driver, server[1])
                             all_channels = utils.find_channels(driver)
-
+                            print(all_channels)
                             for channel in all_channels:
+                                sleep(1)
+                                print(channel)
                                 if channel[0] in channels:
                                     utils.press_element(driver, channel[1])
                                     if sys.platform == 'linux':

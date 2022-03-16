@@ -76,7 +76,7 @@ def get_server_names():
 def find_channels(driver):
     channels = []
     deployable_menus = WebDriverWait(driver, 20).until(
-    EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div[1][@aria-expanded='false']")))
+    EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div[@aria-expanded]")))
     print(deployable_menus)
     
     for deployable_menu in deployable_menus:
