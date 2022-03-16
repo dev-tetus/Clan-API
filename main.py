@@ -28,7 +28,6 @@ if __name__ == '__main__':
     driver=utils.get_driver()
     print(driver)
     driver.get("https://www.discord.com/login")
-    driver.maximize_window()
     utils.do_login(driver)
     print('Login done...')
     servers_to_access = utils.find_servers(driver,servers)
@@ -39,14 +38,13 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if current_time == '15:57:00':
+            if True:#current_time == '11:18:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:
                         utils.do_login(driver)
-
                     if server[0] in servers:
-                        
+                        print(server[0])    
                         if server[0] == 'La Souce Family':
                             utils.press_server(driver, server[1])
                             channels = utils.find_channels(driver)
@@ -55,13 +53,16 @@ if __name__ == '__main__':
                                     utils.press_server(driver, channel[1])
                                     
                                     if sys.platform == 'linux':
-                                        utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
+                                        print('la souce')
+                                        #utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
                                     else:
                                         utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
                         else:
                             utils.press_server(driver, server[1])
                             all_channels = utils.find_channels(driver)
-                            
+                            print(all_channels)
+                            driver.quit()
+                            exit()
                             for channel in all_channels:
                                 if channel[0] in channels:
                                     utils.press_server(driver, channel[1])

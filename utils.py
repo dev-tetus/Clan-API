@@ -77,9 +77,10 @@ def find_channels(driver):
     channels= []
     
     channels_availables = WebDriverWait(driver, 20).until(
-    EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div/a/div[2]/div")))
-
+    EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li")))
+    
     for channel_clickable in channels_availables:
+        print(channel_clickable.text)
         channels.append((channel_clickable.text,channel_clickable))
     return channels
 
