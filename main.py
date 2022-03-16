@@ -39,7 +39,7 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if current_time == '11:08:00':
+            if True:#current_time == '14:57:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:
@@ -48,11 +48,11 @@ if __name__ == '__main__':
                     if server[0] in servers:
                         
                         if server[0] == 'La Souce Family':
-                            utils.press_server(driver, server[1])
+                            utils.press_element(driver, server[1])
                             channels = utils.find_channels(driver)
                             for channel in channels:
                                 if channel[0] == 'a-l-abris-des-regards':
-                                    utils.press_server(driver, channel[1])
+                                    utils.press_element(driver, channel[1])
                                     sleep(2)
                                     if sys.platform == 'linux':
                                         utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
@@ -60,21 +60,20 @@ if __name__ == '__main__':
                                         pass
                                         # utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
                         else:
-                            utils.press_server(driver, server[1])
+                            utils.press_element(driver, server[1])
                             all_channels = utils.find_channels(driver)
-                            print(all_channels)
-                            driver.quit()
-                            exit()
+
                             for channel in all_channels:
                                 if channel[0] in channels:
-                                    utils.press_server(driver, channel[1])
+                                    utils.press_element(driver, channel[1])
                                     if sys.platform == 'linux':
                                         utils.send_message(driver,text)
                                     else:
                                         print(f'Channel {channel[0]} is in channels list')
                                         # utils.send_message(driver,text)
                                         # print('yes')
-    except:
+    except Exception as e:
+        print(e)
         print('Exception...')
         driver.quit()
         exit()

@@ -61,7 +61,7 @@ __***Calculé avec l'API de Clash of Clans***__
 https://link.clashofclans.com/fr?action=OpenClanProfile&tag=2LV9J8VLQ
 """
 
-def press_server(driver, element):
+def press_element(driver, element):
     webdriver.ActionChains(driver).click_and_hold(element).perform()
     webdriver.ActionChains(driver).release().perform()
 
@@ -74,7 +74,15 @@ def get_server_names():
     ]
 
 def find_channels(driver):
-    channels= []
+    channels = []
+    deployable_menus = WebDriverWait(driver, 20).until(
+    EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div[1][@aria-expanded='false']")))
+    print(deployable_menus)
+    
+    for deployable_menu in deployable_menus:
+        if deployable_menu.get_attribute('aria-expanded') != None:
+            if deployable_menu.get_attribute('aria-expanded') == 'false':
+                press_element(driver,deployable_menu)
     
     channels_availables = WebDriverWait(driver, 20).until(
     EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div/a/div[2]/div")))
