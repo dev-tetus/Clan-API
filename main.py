@@ -62,8 +62,10 @@ if __name__ == '__main__':
                         else:
                             utils.press_element(driver, server[1])
                             all_channels = utils.find_channels(driver)
-
+                            print(all_channels)
                             for channel in all_channels:
+                                sleep(1)
+                                print(channel)
                                 if channel[0] in channels:
                                     utils.press_element(driver, channel[1])
                                     if sys.platform == 'linux':
