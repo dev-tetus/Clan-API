@@ -39,7 +39,7 @@ if __name__ == '__main__':
         while True:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-            if True:#current_time == '14:57:00':
+            if True:#current_time == '15:57:00':
                 for server in servers_to_access:
                     print(server)
                     if 'https://discord.com/login' in driver.current_url:
@@ -70,9 +70,8 @@ if __name__ == '__main__':
                                         print(f'Channel {channel[0]} is in channels list')
                                         # utils.send_message(driver,text)
                                     else:
-                                        print(f'Channel {channel[0]} is in channels list')
-                                        # utils.send_message(driver,text)
-                                        # print('yes')
+                                        #utils.send_message(driver,text)
+                                        print('yes')
     except Exception as e:
         print(e)
         print('Exception...')

@@ -74,15 +74,21 @@ def get_server_names():
     ]
 
 def find_channels(driver):
-    channels = []
+    channels= []
+
     deployable_menus = WebDriverWait(driver, 20).until(
-    EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div[1][@aria-expanded='false']")))
+    EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div[1]/div[@aria-expanded]")))
     print(deployable_menus)
     
     for deployable_menu in deployable_menus:
         if deployable_menu.get_attribute('aria-expanded') != None:
             if deployable_menu.get_attribute('aria-expanded') == 'false':
+                print('closed: ',deployable_menu)
+                sleep(2)
                 press_element(driver,deployable_menu)
+            else:
+                sleep(2)
+                print('open: ',deployable_menu)
     
     channels_availables = WebDriverWait(driver, 20).until(
     EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div/a/div[2]/div")))
