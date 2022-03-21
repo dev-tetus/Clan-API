@@ -12,7 +12,24 @@ class ClashData():
             'content-type': 'application/json',
             'Authorization': 'Bearer {api}'.format(api=self.credentials["api_key"])
         }
-        
+    
+    def get_win_streak(self):
+        response = requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}/warlog', headers=self.headers)
+        streak = 0
+        for war in response.json()['items']:
+            if war['attacksPerMember'] > 1:
+                if war['result'] == 'win':
+                    streak += 1
+                else:
+                    if streak == 0:
+                        return streak
+                    else:
+                        return streak
+            else:
+                continue
+        return streak
+            
+
     def get_required_trophies(self):
         response = requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}', headers=self.headers)
         return response.json()['requiredTrophies']
@@ -74,7 +91,9 @@ class ClashData():
 
         player_troop_levels_dataframe= player_troop_levels_dataframe[player_troop_levels_dataframe['village'] == 'home']
         player_troop_levels_dataframe= pd.merge(player_troop_levels_dataframe, username_dataframe, how='cross')
+        # print(player_troop_levels_dataframe)
         player_troop_levels_dataframe= player_troop_levels_dataframe[player_troop_levels_dataframe.columns.difference(['superTroopIsActive'])]
+        # print(player_troop_levels_dataframe)
         return player_troop_levels_dataframe
 
         
@@ -85,7 +104,8 @@ if __name__ == '__main__':
 
     # print(cd.get_clan_points())
 
-    print(cd.get_troop_donation_avg())
+    # print(cd.get_win_streak())
+    cd.get_player_info('%23R2OPRQG8')
     
     '''
     print(cd.get_player_info(DEBUG=True))

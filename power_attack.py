@@ -460,10 +460,13 @@ class ClanPowerAttack():
 
 if __name__ == '__main__':
     cd = ClanPowerAttack()
-    print(cd.get_players_power_attack())
+    # print(cd.get_players_power_attack())
     # print(cd.get_max_levels_for_townhall(tag='%2329JLCPYJG'))
     # print(cd.get_max_levels_for_townhall(tag='%239OULLQGYQ'))
     # print(cd.get_max_levels_for_townhall(tag='%23Q22LLJYVU'))
+    # print(cd.get_max_levels_for_townhall(tag='%232PCC9ROO8')) #Anatole
+    # print(cd.get_max_levels_for_townhall(tag='%23GYL2RJQL'))  #Empereur Louis
+    print(cd.get_max_levels_for_townhall(tag='%23R2OPRQG8')) 
 
 
  

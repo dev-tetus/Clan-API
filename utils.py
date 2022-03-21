@@ -51,6 +51,7 @@ __***Calculé avec l'API de Clash of Clans***__
         :trophy: {trophies} points du clan
         :gift: {donations_average} donations/joueur
         :fire: {clan_power_attack} % (Puissance d'attaque du clan)
+        :fire: Série actuelle de {win_streak} victoires en guerre
 :clipboard: PRÉREQUIS
         :house: HDV {required_townhall} minimum
         :trophy: {required_trophies} trophées minimum
@@ -158,8 +159,9 @@ def get_text_with_data():
     clan_power_attack = ClanPowerAttack().get_players_power_attack()
     required_townhall= cd.get_required_townhall()
     required_trophies= cd.get_required_trophies()
+    win_streak = cd.get_win_streak()
     
-    return text.format(date=datetime.now().strftime("%d/%m/%Y"),clan_members=str(clan_members),trophies=trophies,donations_average=donations_average,clan_power_attack=clan_power_attack, required_townhall=required_townhall,required_trophies=required_trophies)
+    return text.format(date=datetime.now().strftime("%d/%m/%Y"),clan_members=str(clan_members),trophies=trophies,donations_average=donations_average,clan_power_attack=clan_power_attack, required_townhall=required_townhall,required_trophies=required_trophies, win_streak=win_streak)
             # .replace(r'{date}',datetime.now()\
             # .strftime("%d/%m/%Y"))\
             # .replace(r'{clan_members}',str(cd.clan_members))\
