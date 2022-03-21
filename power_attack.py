@@ -455,18 +455,19 @@ class ClanPowerAttack():
 
         print(player_levels)
         clan_power_attack = player_levels['PowerAttack'].mean()
-        clan_power_attack = np.format_float_positional(clan_power_attack, precision=4)
-        return np.float64(clan_power_attack) * np.float64(100)
+        print(type(clan_power_attack))
+        # clan_power_attack = np.float64(np.format_float_positional(clan_power_attack, precision=4))
+        return np.format_float_positional(clan_power_attack * 100, precision=2)
 
 if __name__ == '__main__':
     cd = ClanPowerAttack()
-    # print(cd.get_players_power_attack())
+    print(cd.get_players_power_attack())
     # print(cd.get_max_levels_for_townhall(tag='%2329JLCPYJG'))
     # print(cd.get_max_levels_for_townhall(tag='%239OULLQGYQ'))
     # print(cd.get_max_levels_for_townhall(tag='%23Q22LLJYVU'))
     # print(cd.get_max_levels_for_townhall(tag='%232PCC9ROO8')) #Anatole
     # print(cd.get_max_levels_for_townhall(tag='%23GYL2RJQL'))  #Empereur Louis
-    print(cd.get_max_levels_for_townhall(tag='%23R2OPRQG8')) 
+    # print(cd.get_max_levels_for_townhall(tag='%23R2OPRQG8')) 
 
 
  
