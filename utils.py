@@ -25,25 +25,26 @@ text = """
 :page_facing_up: DESCRIPTION 
 
      SN3T est un jeune clan créé par 5 amis chacun déterminé à performer
-     et devenir des joueurs aguéris. Aujourd'hui nous présentons notre
+     et devenir des joueurs aguerris. Aujourd'hui nous présentons notre
      clan, notre famille, constitutiée de joueurs solides ayant l'ambition
      de fonder un clan d'élite.
 
 :chart_with_upwards_trend: PROJETS ACTUELS ET FUTURS
 
-  ✅  La première étape de notre stratégie vise à gagner le plus d'XP possible en déclarant des guerres les unes
-     après les autres, ce qui nous permet non seulement de gagner de l'XP mais aussi de grandir
-     en tant que famille en nous aidant et en nous conseillant les uns les autres.
+  ✅  La première étape de notre stratégie vise à gagner le plus d'XP possible en déclarant 
+     des guerres les unes après les autres, en s'entraidant cela nous permettrait de gagner 
+     plus facilement de l'XP et d'augmenter la cohésion au sein du clan.
 
   ✅ Lorsque le moment sera venu et que nous le jugerons bon, nous commencerons à organiser des
      étapes de rush et à déclarer des guerres en fonction des héros des membres du clan.
 
   ✅ Chez SN3T, nous recherchons des personnes matures, motivées et engagées. Nous sommes un clan
-     très flexible, nous acceptons donc que les gens puissent être absents pour n'importe quelle
-     raison qu'ils considèrent, ce que nous exigeons est que ceux qui ont précédemment formalisé 
-     qu'ils veulent participer à tout événement en cours, s'engagent et participent à l'événement. 
-     Nous sommes 5 personnes à gérer le clan, donc nous voyons toujours ceux qui sont engagés dans 
-     celui-ci et nous leur ferons toujours savoir.
+     très flexible ce qui signifie que l'on accepte que les gens puissent être absents pour n'importe
+     quelle raison qu'il considèrent valable. Ce que nous exigeons est que ceux s'étant précédemment engagé 
+     pour un événement y participent alors activement.
+
+     Tout respect des règles et efforts fournis au sein du clan seront felicités à travers différents biais
+     
 
 :european_castle: STATS DU CLAN AU {date}
 __***Calculé avec l'API de Clash of Clans***__
@@ -51,12 +52,14 @@ __***Calculé avec l'API de Clash of Clans***__
         :trophy: {trophies} points du clan
         :gift: {donations_average} donations/joueur
         :fire: {clan_power_attack} % (Puissance d'attaque du clan)
-        :fire: Série actuelle de {win_streak} victoires en guerre
+        :fire: Série actuelle de {win_streak} victoire(s) en guerre
 :clipboard: PRÉREQUIS
         :house: HDV {required_townhall} minimum
         :trophy: {required_trophies} trophées minimum
         :star: Actif
         :star: Donnateur généreux
+
+https://discord.gg/pegaQ9nygB
 
 
 https://link.clashofclans.com/fr?action=OpenClanProfile&tag=2LV9J8VLQ
