@@ -25,25 +25,26 @@ text = """
 :page_facing_up: DESCRIPTION 
 
      SN3T est un jeune clan créé par 5 amis chacun déterminé à performer
-     et devenir des joueurs aguéris. Aujourd'hui nous présentons notre
+     et devenir des joueurs aguerris. Aujourd'hui nous présentons notre
      clan, notre famille, constitutiée de joueurs solides ayant l'ambition
      de fonder un clan d'élite.
 
 :chart_with_upwards_trend: PROJETS ACTUELS ET FUTURS
 
-  ✅  La première étape de notre stratégie vise à gagner le plus d'XP possible en déclarant des guerres les unes
-     après les autres, ce qui nous permet non seulement de gagner de l'XP mais aussi de grandir
-     en tant que famille en nous aidant et en nous conseillant les uns les autres.
+  ✅  La première étape de notre stratégie vise à gagner le plus d'XP possible en déclarant 
+     des guerres les unes après les autres, en s'entraidant cela nous permettrait de gagner 
+     plus facilement de l'XP et d'augmenter la cohésion au sein du clan.
 
   ✅ Lorsque le moment sera venu et que nous le jugerons bon, nous commencerons à organiser des
      étapes de rush et à déclarer des guerres en fonction des héros des membres du clan.
 
   ✅ Chez SN3T, nous recherchons des personnes matures, motivées et engagées. Nous sommes un clan
-     très flexible, nous acceptons donc que les gens puissent être absents pour n'importe quelle
-     raison qu'ils considèrent, ce que nous exigeons est que ceux qui ont précédemment formalisé 
-     qu'ils veulent participer à tout événement en cours, s'engagent et participent à l'événement. 
-     Nous sommes 5 personnes à gérer le clan, donc nous voyons toujours ceux qui sont engagés dans 
-     celui-ci et nous leur ferons toujours savoir.
+     très flexible, ce qui signifie que l'on accepte que les gens puissent être absents pour n'importe
+     quelle raison qu'ils considèrent valable. Ce que nous exigeons est que ceux s'étant précédemment engagé 
+     pour un événement y participent alors activement.
+
+     Tout respect des règles et efforts fournis au sein du clan seront felicités à travers différents biais
+     
 
 :european_castle: STATS DU CLAN AU {date}
 __***Calculé avec l'API de Clash of Clans***__
@@ -51,17 +52,20 @@ __***Calculé avec l'API de Clash of Clans***__
         :trophy: {trophies} points du clan
         :gift: {donations_average} donations/joueur
         :fire: {clan_power_attack} % (Puissance d'attaque du clan)
+        :fire: Série actuelle de {win_streak} victoire(s) en guerre
 :clipboard: PRÉREQUIS
         :house: HDV {required_townhall} minimum
         :trophy: {required_trophies} trophées minimum
         :star: Actif
         :star: Donnateur généreux
 
+https://discord.gg/pegaQ9nygB
+
 
 https://link.clashofclans.com/fr?action=OpenClanProfile&tag=2LV9J8VLQ
 """
 
-def press_server(driver, element):
+def press_element(driver, element):
     webdriver.ActionChains(driver).click_and_hold(element).perform()
     webdriver.ActionChains(driver).release().perform()
 
@@ -70,11 +74,24 @@ def get_server_names():
     return [
         ('Clash of Clans Français 🇫🇷'),
         ('Clash Community'),
+        ('Café du recrutement 🇫🇷Clash A L\'asso'),
+        ('La SC mania'),
         ('La Souce Family')
     ]
 
 def find_channels(driver):
     channels= []
+
+    deployable_menus = WebDriverWait(driver, 20).until(
+    EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div[1]/div[@aria-expanded]")))
+    
+    for deployable_menu in deployable_menus:
+        if deployable_menu.get_attribute('aria-expanded') != None:
+            if deployable_menu.get_attribute('aria-expanded') == 'false':
+                sleep(2)
+                press_element(driver,deployable_menu)
+            else:
+                sleep(2)
     
     channels_availables = WebDriverWait(driver, 20).until(
     EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li")))
@@ -130,7 +147,6 @@ def do_login(driver):
     #     EC.presence_of_all_elements_located((By.CSS_SELECTOR, r'#app-mount > div.app-3xd6d0 > div > div > div > div > form > div > div > div.mainLoginContainer-wHmAjP > div.block-3uVSn4.marginTop20-2T8ZJx > button.marginBottom8-emkd0_.button-1cRKG6.button-f2h6uQ.lookFilled-yCfaCM.colorBrand-I6CyqQ.sizeLarge-3mScP9.fullWidth-fJIsjq.grow-2sR_-F')))
     # button = driver.find_element(by=By.CSS_SELECTOR, value=r'#app-mount > div.app-3xd6d0 > div > div > div > div > form > div > div > div.mainLoginContainer-wHmAjP > div.block-3uVSn4.marginTop20-2T8ZJx > button.marginBottom8-emkd0_.button-1cRKG6.button-f2h6uQ.lookFilled-yCfaCM.colorBrand-I6CyqQ.sizeLarge-3mScP9.fullWidth-fJIsjq.grow-2sR_-F')
     for element in driver.find_elements(By.TAG_NAME, "button"):
-        print(element.text)
         if element.text == "Login" or element.text == "Iniciar sesión":
              button = element
     webdriver.ActionChains(driver).click_and_hold(button).perform()
@@ -145,8 +161,9 @@ def get_text_with_data():
     clan_power_attack = ClanPowerAttack().get_players_power_attack()
     required_townhall= cd.get_required_townhall()
     required_trophies= cd.get_required_trophies()
+    win_streak = cd.get_win_streak()
     
-    return text.format(date=datetime.now().strftime("%d/%m/%Y"),clan_members=str(clan_members),trophies=trophies,donations_average=donations_average,clan_power_attack=clan_power_attack, required_townhall=required_townhall,required_trophies=required_trophies)
+    return text.format(date=datetime.now().strftime("%d/%m/%Y"),clan_members=str(clan_members),trophies=trophies,donations_average=donations_average,clan_power_attack=clan_power_attack, required_townhall=required_townhall,required_trophies=required_trophies, win_streak=win_streak)
             # .replace(r'{date}',datetime.now()\
             # .strftime("%d/%m/%Y"))\
             # .replace(r'{clan_members}',str(cd.clan_members))\
