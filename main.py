@@ -15,7 +15,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 import utils
 channels=[
     '📬・recrutement-clan',
-    'recrutement_clans'
+    'recrutement_clans',
+    '⚔clan_cherche_joueurs',
+    'les-clans-qui-recrutent',
+    
 ]
 
 if __name__ == '__main__':
@@ -30,7 +33,6 @@ if __name__ == '__main__':
 
     driver=utils.get_driver()
 
-    print(driver)
 
     driver.get("https://www.discord.com/login")
     driver.maximize_window()
@@ -47,7 +49,6 @@ if __name__ == '__main__':
             print("Son las ", current_time, ' horas')
             if True:#current_time == '00:20:00':
                 for server in servers_to_access:
-                    print(server)
                     if 'https://discord.com/login' in driver.current_url:
                         utils.do_login(driver)
 
@@ -67,10 +68,8 @@ if __name__ == '__main__':
                         else:
                             utils.press_element(driver, server[1])
                             all_channels = utils.find_channels(driver)
-                            print(all_channels)
                             for channel in all_channels:
                                 sleep(1)
-                                print(channel)
                                 if channel[0] in channels:
                                     utils.press_element(driver, channel[1])
                                     if sys.platform == 'linux':

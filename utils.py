@@ -39,8 +39,8 @@ text = """
      étapes de rush et à déclarer des guerres en fonction des héros des membres du clan.
 
   ✅ Chez SN3T, nous recherchons des personnes matures, motivées et engagées. Nous sommes un clan
-     très flexible ce qui signifie que l'on accepte que les gens puissent être absents pour n'importe
-     quelle raison qu'il considèrent valable. Ce que nous exigeons est que ceux s'étant précédemment engagé 
+     très flexible, ce qui signifie que l'on accepte que les gens puissent être absents pour n'importe
+     quelle raison qu'ils considèrent valable. Ce que nous exigeons est que ceux s'étant précédemment engagé 
      pour un événement y participent alors activement.
 
      Tout respect des règles et efforts fournis au sein du clan seront felicités à travers différents biais
@@ -74,6 +74,8 @@ def get_server_names():
     return [
         ('Clash of Clans Français 🇫🇷'),
         ('Clash Community'),
+        ('Café du recrutement 🇫🇷Clash A L\'asso'),
+        ('La SC mania'),
         ('La Souce Family')
     ]
 
@@ -82,17 +84,14 @@ def find_channels(driver):
 
     deployable_menus = WebDriverWait(driver, 20).until(
     EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div[1]/div[@aria-expanded]")))
-    print(deployable_menus)
     
     for deployable_menu in deployable_menus:
         if deployable_menu.get_attribute('aria-expanded') != None:
             if deployable_menu.get_attribute('aria-expanded') == 'false':
-                print('closed: ',deployable_menu)
                 sleep(2)
                 press_element(driver,deployable_menu)
             else:
                 sleep(2)
-                print('open: ',deployable_menu)
     
     channels_availables = WebDriverWait(driver, 20).until(
     EC.presence_of_all_elements_located((By.XPATH, "//*[@id='channels']/ul/li/div/div/a/div[2]/div")))
@@ -147,7 +146,6 @@ def do_login(driver):
     #     EC.presence_of_all_elements_located((By.CSS_SELECTOR, r'#app-mount > div.app-3xd6d0 > div > div > div > div > form > div > div > div.mainLoginContainer-wHmAjP > div.block-3uVSn4.marginTop20-2T8ZJx > button.marginBottom8-emkd0_.button-1cRKG6.button-f2h6uQ.lookFilled-yCfaCM.colorBrand-I6CyqQ.sizeLarge-3mScP9.fullWidth-fJIsjq.grow-2sR_-F')))
     # button = driver.find_element(by=By.CSS_SELECTOR, value=r'#app-mount > div.app-3xd6d0 > div > div > div > div > form > div > div > div.mainLoginContainer-wHmAjP > div.block-3uVSn4.marginTop20-2T8ZJx > button.marginBottom8-emkd0_.button-1cRKG6.button-f2h6uQ.lookFilled-yCfaCM.colorBrand-I6CyqQ.sizeLarge-3mScP9.fullWidth-fJIsjq.grow-2sR_-F')
     for element in driver.find_elements(By.TAG_NAME, "button"):
-        print(element.text)
         if element.text == "Login" or element.text == "Iniciar sesión":
              button = element
     webdriver.ActionChains(driver).click_and_hold(button).perform()
