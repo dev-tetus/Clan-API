@@ -35,11 +35,8 @@ if __name__ == '__main__':
 
 
     driver.get("https://www.discord.com/login")
-<<<<<<< HEAD
-=======
     driver.maximize_window()
 
->>>>>>> master
     utils.do_login(driver)
     print('Login done...')
     servers_to_access = utils.find_servers(driver,servers)
@@ -50,11 +47,7 @@ if __name__ == '__main__':
         while not done:
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
-<<<<<<< HEAD
-            if True:#current_time == '11:18:00':
-=======
             if True:#current_time == '00:20:00':
->>>>>>> master
                 for server in servers_to_access:
                     if 'https://discord.com/login' in driver.current_url:
                         utils.do_login(driver)
@@ -75,12 +68,6 @@ if __name__ == '__main__':
                         else:
                             utils.press_element(driver, server[1])
                             all_channels = utils.find_channels(driver)
-<<<<<<< HEAD
-                            print(all_channels)
-                            driver.quit()
-                            exit()
-=======
->>>>>>> master
                             for channel in all_channels:
                                 sleep(1)
                                 if channel[0] in channels:
