@@ -12,24 +12,31 @@ from selenium.webdriver.chromium.service import ChromiumService
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import WebDriverWait
 
-import utils
+import classes.utils as utils
+import classes.player as p
 channels=[
     '📬・recrutement-clan',
     'recrutement_clans',
+    '📮・recrutement-clan'
     '⚔clan_cherche_joueurs',
     'les-clans-qui-recrutent',
     
 ]
 
 if __name__ == '__main__':
-    done = False
+    
+          
+    
 
+
+    done = False
+    base_url_channels = "https://www.discord.com/channels/"
 
     t = time.localtime()
     text = utils.get_text_with_data()
 
     url = "https://www.discord.com/login"
-    servers = utils.get_server_names()
+    servers = utils.get_server_names_and_channels()
 
     driver=utils.get_driver()
 
@@ -39,8 +46,8 @@ if __name__ == '__main__':
 
     utils.do_login(driver)
     print('Login done...')
-    servers_to_access = utils.find_servers(driver,servers)
-    print(f'List of servers found:{servers_to_access}')
+    # servers_to_access = utils.find_servers(driver,servers)
+    # print(f'List of servers found:{servers_to_access}')
 
 
     try:
@@ -48,36 +55,18 @@ if __name__ == '__main__':
             current_time=time.strftime("%H:%M:%S", time.localtime())
             print("Son las ", current_time, ' horas')
             if True:#current_time == '00:20:00':
-                for server in servers_to_access:
+                for server in servers:
+                    driver.get(f'{base_url_channels}{server[0]}/{server[1]}')
+                    sleep(5)
+                       
                     if 'https://discord.com/login' in driver.current_url:
                         utils.do_login(driver)
-                    if server[0] in servers:
-                        print(server[0])    
-                        if server[0] == 'La Souce Family':
-                            utils.press_element(driver, server[1])
-                            channels = utils.find_channels(driver)
-                            for channel in channels:
-                                if channel[0] == 'a-l-abris-des-regards':
-                                    utils.press_element(driver, channel[1])
-                                    sleep(2)
-                                    if sys.platform == 'linux':
-                                        print('la souce')
-                                        #utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
-                                    else:
-                                        utils.send_message(driver,f'Messages envoyés à {time.strftime("%H:%M:%S", time.localtime())}')
-                        else:
-                            utils.press_element(driver, server[1])
-                            all_channels = utils.find_channels(driver)
-                            for channel in all_channels:
-                                sleep(1)
-                                if channel[0] in channels:
-                                    utils.press_element(driver, channel[1])
-                                    if sys.platform == 'linux':
-                                        print(f'Channel {channel[0]} is in channels list')
-                                        # utils.send_message(driver,text)
-                                    else:
-                                        utils.send_message(driver,text)
-                                        print('\n############################################\n\t\t\tSent!\n############################################')
+                    
+                    
+                    sleep(5)
+                    utils.send_message(driver,text)
+                   
+                    print('\n############################################\n\t\t\tSent!\n############################################')
             done = True
     except Exception as e:
         print(e)

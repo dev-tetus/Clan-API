@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
-import credentials
+import classes.credentials as credentials
 
-from clash_data import ClashData
+from classes.clash_data import ClashData
 
 pd.options.display.float_format = "{:,.2f}".format
 
@@ -405,6 +405,8 @@ class ClanPowerAttack():
         player_info_dataframe = clash_data.get_player_info(tag=tag).drop_duplicates()
         player_info_dataframe = self.get_max_barrack_level(player_info_dataframe)
 
+        print(player_info_dataframe)
+
         max_lab__per_townhall_dataframe = self.get_lab_levels()
         spells_max_levels_per_lab = self.get_spells_max_level_for_laboratory()
         troops_max_levels_per_lab = self.get_troops_max_level_for_laboratory()
@@ -444,6 +446,7 @@ class ClanPowerAttack():
         player_power_attack_dataframe= pd.DataFrame(columns=['PowerAttack', 'Username'])
 
         for player in player_tags:
+            print(player)
             troops_df=self.get_max_levels_for_townhall(tag=player[1])
             player_power_attack = troops_df['PowerAttack'].mean()
             

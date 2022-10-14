@@ -1,4 +1,4 @@
-import clash_data
+import classes.clash_data as clash_data
 
 
 class Player():
