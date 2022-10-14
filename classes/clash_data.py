@@ -1,6 +1,6 @@
 from urllib import response
 import requests
-import classes.credentials as cred
+import credentials as cred
 import pandas as pd
 import numpy as np
 import urllib
@@ -71,9 +71,9 @@ class ClashData():
         avg = int(donations/limit if limit else donations/members)
         return avg
 
-    def get_player_tags(self, limit=None):
+    def get_player_tags(self, limit=None,clan_tag=None):
         player_tags= []
-        response_tags = requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}/members?limit={limit if limit else 50}', headers=self.headers)
+        response_tags = requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"] if clan_tag==None else clan_tag.replace("#","%23")}/members?limit={limit if limit else 50}', headers=self.headers)
         for player_tag in response_tags.json()['items']:
             if player_tag["tag"] not in black_list:
                 player_tags.append((player_tag["name"], player_tag["tag"].replace("#","%23")))

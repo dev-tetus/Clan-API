@@ -1,6 +1,6 @@
+import os
 import time
 from datetime import datetime
-from os import path
 import sys
 from time import sleep
 
@@ -12,8 +12,10 @@ from selenium.webdriver.chromium.service import ChromiumService
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import WebDriverWait
 
-import classes.utils as utils
-import classes.player as p
+sys.path.insert(1, os.getcwd()+str("/classes"))
+
+import utils as utils
+import player as p
 channels=[
     '📬・recrutement-clan',
     'recrutement_clans',
@@ -24,10 +26,6 @@ channels=[
 ]
 
 if __name__ == '__main__':
-    
-          
-    
-
 
     done = False
     base_url_channels = "https://www.discord.com/channels/"

@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import classes.credentials as cred
+import credentials as cred
 import functools as ft
 class GameData():
     def __init__(self):

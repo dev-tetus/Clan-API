@@ -14,11 +14,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 
-from classes.clash_data import ClashData
-import classes.credentials as cred
+from clash_data import ClashData
+import credentials as cred
 
 from time import sleep
-from classes.power import Power
+from power import Power
 
 
 

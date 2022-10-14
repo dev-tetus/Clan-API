@@ -1,11 +1,11 @@
 import pandas as pd
 import numpy as np
-import classes.credentials as cred
+import credentials as cred
 import functools as ft
 
 
-from classes.clash_data import ClashData
-from classes.game_data import GameData
+from clash_data import ClashData
+from game_data import GameData
 
 
 
@@ -50,6 +50,7 @@ class Player(GameData):
 
     def get_pets(self):
         data = self.get_merged_dataframes(self.game_pets,self.player_troops,  "TroopName", "inner", "both")
+        
         return data
     def get_locked_pets(self):
         return self.get_locked_abstract(self.game_pets, self.player_troops,"TroopName", "left", "left_only")
@@ -123,6 +124,7 @@ class Player(GameData):
         self.dataframe["ActualMaxSiegeWorkshopLevel"] = self.dataframe.apply(lambda row: self.assign_actual_max_siege_workshop_level(row,min_TownHallLevelRequired_SiegeWorkshop), axis=1)
         self.dataframe["ActualMaxPetHouseLevel"] = self.dataframe.apply(lambda row: self.assign_actual_max_pet_shop_level(row,min_TownHallLevelRequired_Pet_House), axis=1)
         self.dataframe['ActualMaxUnitLevel'] = self.dataframe.apply(lambda row:self.assign_actual_max_unit_level(row),axis=1)
+        print(self.dataframe[self.dataframe["ProductionBuilding"]== "Pet House"])
         
 
     def assign_actual_max_spell_forge_level(self,row,min_TownHallLevelRequired_SpellForge,min_TownHallLevelRequired_MiniSpellFactory):
@@ -151,7 +153,11 @@ class Player(GameData):
                 self.petHouseLevel = 0
             else: 
                 th_arr = self.game_buildings[self.game_buildings["Name"] == "Pet Shop"]
-                df_sort = th_arr.iloc[(th_arr['TownHallLevel']-self.townHallLevel).abs().argsort()[:3]]
+                # df_sort = th_arr.iloc[(th_arr['TownHallLevel']-self.townHallLevel).argsort()]
+                df_sort = th_arr[th_arr['TownHallLevel'] <=self.townHallLevel]
+                # [["TroopName","TownHallLevel"]].toxarray()
+                # .findLastIndex((element) =>{element <=0})
+               
                 self.petHouseLevel = df_sort[df_sort["TownHallLevel"] == df_sort["TownHallLevel"].max()]["BuildingLevel"].max()
             return self.petHouseLevel
     
