@@ -101,9 +101,11 @@ class Player(GameData):
 
     def set_max_barracks_and_lab_levels(self):
         self.laboratoryLevel=self.game_buildings[(self.game_buildings["Name"]=="Laboratory") &(self.game_buildings["TownHallLevel"] <= self.townHallLevel)].max()["BuildingLevel"]#.reset_index().at[0,"BuildingLevel"]
+        if(np.isnan(self.laboratoryLevel)):
+            self.laboratoryLevel = 0
         self.barrackLevel = self.game_buildings[(self.game_buildings["Name"]=="Barrack") & (self.game_buildings["TownHallLevel"] <= self.townHallLevel)].max()["BuildingLevel"]#.reset_index().at[0,"BuildingLevel"]
         self.spellForgesLevels =self.game_buildings[(self.game_buildings["Name"]=="Spell Forge") | (self.game_buildings["Name"]=="Mini Spell Factory") & (self.game_buildings["TownHallLevel"] <= self.townHallLevel)]
-
+  
         min_TownHallLevelRequired_DarkBarrack = self.game_buildings[self.game_buildings["Name"]=="Dark Elixir Barrack"]["TownHallLevel"].min()
         min_TownHallLevelRequired_SpellForge = self.spellForgesLevels[self.spellForgesLevels["Name"]=="Spell Forge"]["TownHallLevel"].min()
         min_TownHallLevelRequired_MiniSpellFactory = self.spellForgesLevels[self.spellForgesLevels["Name"]=="Mini Spell Factory"]["TownHallLevel"].min()
@@ -124,7 +126,7 @@ class Player(GameData):
         self.dataframe["ActualMaxSiegeWorkshopLevel"] = self.dataframe.apply(lambda row: self.assign_actual_max_siege_workshop_level(row,min_TownHallLevelRequired_SiegeWorkshop), axis=1)
         self.dataframe["ActualMaxPetHouseLevel"] = self.dataframe.apply(lambda row: self.assign_actual_max_pet_shop_level(row,min_TownHallLevelRequired_Pet_House), axis=1)
         self.dataframe['ActualMaxUnitLevel'] = self.dataframe.apply(lambda row:self.assign_actual_max_unit_level(row),axis=1)
-        print(self.dataframe[self.dataframe["ProductionBuilding"]== "Pet House"])
+        # print(self.dataframe[self.dataframe["ProductionBuilding"]== "SiegeWorkshop"])
         
 
     def assign_actual_max_spell_forge_level(self,row,min_TownHallLevelRequired_SpellForge,min_TownHallLevelRequired_MiniSpellFactory):
@@ -283,6 +285,7 @@ class Player(GameData):
         self.dataframe = self.remove_super_troops()
 
     def set_mean_power_attack(self):
+
         self.totalPowerAttack=self.dataframe["Total"].mean()
         self.actualPowerAttack=self.dataframe[self.dataframe["LockType"] != 1]["Actual"].mean()
         
@@ -290,7 +293,6 @@ class Player(GameData):
     
 
 if __name__ == '__main__':
-    player = Player(DEBUG=True)
-    print(player.dataframe[player.dataframe["ProductionBuilding"] == "Pet House"])
+    player = Player(DEBUG=False,tag="%2329L0VJ2JY")
     # print(player.dataframe)
     # player.get_max_barracks_and_lab_levels()

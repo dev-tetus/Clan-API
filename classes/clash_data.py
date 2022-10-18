@@ -6,7 +6,7 @@ import numpy as np
 import urllib
 
 
-black_list = ["#8VP0C8GG2","#QYC80YUQG","#L82V99R9V","#29L0VJ2JY"]
+# black_list = ["#8VP0C8GG2","#QYC80YUQG","#L82V99R9V","#29L0VJ2JY"]
 
 class ClashData():
     def __init__(self):
@@ -75,8 +75,7 @@ class ClashData():
         player_tags= []
         response_tags = requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"] if clan_tag==None else clan_tag.replace("#","%23")}/members?limit={limit if limit else 50}', headers=self.headers)
         for player_tag in response_tags.json()['items']:
-            if player_tag["tag"] not in black_list:
-                player_tags.append((player_tag["name"], player_tag["tag"].replace("#","%23")))
+            player_tags.append((player_tag["name"], player_tag["tag"].replace("#","%23")))
         return player_tags
         
     def get_player_info(self,tag=None, DEBUG=False):
