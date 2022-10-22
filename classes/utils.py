@@ -57,8 +57,7 @@ __***Calculé avec l'API de Clash of Clans***__
         :passport_control: {clan_members}/50
         :trophy: {trophies} points du clan
         :gift: {donations_average} dons/joueur
-        :fire: {clan_total_power_attack} % (Puissance d'attaque TOTALE du clan) __***Par rapport aux niveaux max de toutes les unités y compris les non débloquées***__
-        :fire: {clan_actual_power_attack} % (Puissance d'attaque ACTUELLE du clan) __***Par rapport aux niveaux max possibles pour chaque HDV du clan***__
+        :fire: {clan_actual_power_attack} % (Puissance d'attaque actuelle du clan) __***Par rapport aux niveaux max possibles pour chaque HDV du clan***__
         :fire: Série actuelle de {win_streak} victoire(s) en guerre
 :clipboard: PRÉREQUIS
         :house: HDV {required_townhall} minimum
@@ -145,14 +144,14 @@ def get_text_with_data():
     clan_members = cd.get_clan_members().__len__()
     trophies = cd.get_clan_points()
     donations_average = cd.get_troop_donation_avg()
-    clan_total_power_attack = p.total_clan_power_attack
+    # clan_total_power_attack = p.total_clan_power_attack
     clan_actual_power_attack = p.actual_clan_power_attack
     required_townhall= cd.get_required_townhall()
     required_trophies= cd.get_required_trophies()
     win_streak = cd.get_win_streak()
     clan_level=cd.get_clan_level()
     
-    return text.format(date=datetime.now().strftime("%d/%m/%Y"),clan_level=str(clan_level),clan_members=str(clan_members),trophies=trophies,donations_average=donations_average,clan_total_power_attack=clan_total_power_attack,clan_actual_power_attack=clan_actual_power_attack, required_townhall=required_townhall,required_trophies=required_trophies, win_streak=win_streak)
+    return text.format(date=datetime.now().strftime("%d/%m/%Y"),clan_level=str(clan_level),clan_members=str(clan_members),trophies=trophies,donations_average=donations_average,clan_actual_power_attack=clan_actual_power_attack, required_townhall=required_townhall,required_trophies=required_trophies, win_streak=win_streak)
             # .replace(r'{date}',datetime.now()\
             # .strftime("%d/%m/%Y"))\
             # .replace(r'{clan_members}',str(cd.clan_members))\
