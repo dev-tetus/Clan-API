@@ -1,5 +1,8 @@
 discord-env/
 
 __pycache__/
-credentials.txt
+credentials*.txt
 ./player_level.json
+
+
+.vscode

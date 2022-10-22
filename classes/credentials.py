@@ -1,8 +1,9 @@
 import sys
 
 def get_credentials():
-    if sys.platform == 'linux':
-        f = open(r'/home/ubuntu/discord-scraping/credentials.txt', 'r')
+
+    if sys.platform == "Linux":
+        f = open('credentials-linux.txt', 'r')
     else:
         f = open('credentials.txt', 'r')
     content = f.readlines()
