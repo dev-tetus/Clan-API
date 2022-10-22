@@ -15,7 +15,13 @@ class ClashData():
             'content-type': 'application/json',
             'Authorization': 'Bearer {api}'.format(api=self.credentials["api_key"])
         }
-    
+    def get_player_role(self,tag):
+        response = requests.get(f'{self.credentials["base_url"]}/players/{tag.replace("#","%23")}', headers=self.headers)
+        
+        return response.json()['role']
+    def get_player_clan(self,tag):
+        response = requests.get(f'{self.credentials["base_url"]}/players/{tag.replace("#","%23")}', headers=self.headers)
+        return response.json()['clan']['tag']
     def get_clan_level(self):
         response = requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}', headers=self.headers)
         return response.json()['clanLevel']
@@ -51,7 +57,6 @@ class ClashData():
 
     def get_clan_members(self):
         response= requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}/members', headers=self.headers)
-        print(response)
         return response.json()["items"]
 
     def get_clan_points(self):
@@ -80,7 +85,7 @@ class ClashData():
         
     def get_player_info(self,tag=None, DEBUG=False):
         #8YQCLQYG   ;   #2C2U9QCP   ;   %23GYL2RJQL ;   %2392OV8CRGG    ; %23QV8RP8PGC
-        response = requests.get(f'{self.credentials["base_url"]}/players/{"%2329L0VJ2JY" if DEBUG else tag }', headers=self.headers)
+        response = requests.get(f'{self.credentials["base_url"]}/players/{"%2329L0VJ2JY" if DEBUG else tag.replace("#","%23") }', headers=self.headers)
         player_troop_levels_dataframe = pd.DataFrame(columns=['name', 'level', 'maxLevel', 'village'])
         username_dataframe = pd.DataFrame([np.array([response.json()['name'], response.json()['townHallLevel']])],columns=['username', 'townHallLevel'])
 

@@ -13,7 +13,9 @@ class Player(GameData):
     def __init__(self,tag=None,DEBUG=False):
         super().__init__()
         self.player_troops = ClashData().get_player_info(tag=tag,DEBUG=DEBUG)
-        self.townHallLevel = np.int8(self.player_troops['townHallLevel'].unique()[0])
+        self.clan = ClashData().get_player_clan(tag=tag)
+        self.role = ClashData().get_player_role(tag=tag)
+        self.townHallLevel = int(self.player_troops['townHallLevel'].unique()[0])
         self.laboratoryLevel = None
         self.barrackLevel = None
         self.darkBarrackLevel = None
