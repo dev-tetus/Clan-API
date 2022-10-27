@@ -1,12 +1,12 @@
 from flask import Flask, Response
 import os
-import db
 import sys
 sys.path.insert(1, os.getcwd()+str("/classes"))
+import db
 import clash_data as cd
 import power as power
 import player as player
-import credentials as cred
+
 
 
 

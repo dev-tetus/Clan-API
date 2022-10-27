@@ -1,13 +1,14 @@
 import pymysql
+import credentials as cred
 
 
 
 def get_connection():
     try:
-        conexion = pymysql.connect(host='192.168.1.40',
+        conexion = pymysql.connect(host=cred.get_credentials()["db_ip"],
                                 port=3306,
-                                user='root',
-                                password='',
+                                user=cred.get_credentials()["db_user"],
+                                password=cred.get_credentials()["db_pass"],
                                 db='sn3t',
                                 charset='utf8mb4')
         print('Conexion correcta')
