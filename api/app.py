@@ -12,6 +12,7 @@ import credentials as cred
 
 app = Flask(__name__)
 
+db.get_connection()
 
 @app.route('/')
 def home():

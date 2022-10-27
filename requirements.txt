@@ -8,3 +8,4 @@ ipykernel
 numpy
 flask==2.2.2
 PyMySQL
+PyMySQL[rsa]
