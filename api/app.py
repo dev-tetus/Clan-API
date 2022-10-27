@@ -60,19 +60,71 @@ def update_clan_members():
         else:
             query ="""
             UPDATE player
-            SET totalpowerattack = %s, actualpowerattack = %s
+            SET totalpowerattack = %s, actualpowerattack = %s, townhall = %s, clan &
             WHERE tag = %s
             """
-            for p in list(rows):
-                member = player.Player(tag=p[2])
-                cursor.execute(query,(member.totalPowerAttack,member.actualPowerAttack, p[2]))
+
+            for p in cd.ClashData().get_clan_members():
+                member=player.Player(tag=p['tag'])
+                cursor.execute(query,(member.totalPowerAttack,member.actualPowerAttack, member.townHallLevel,p['tag']))
 
             conn.commit()
             cursor.close()
             return Response(f"Players updated...")
 
-            # print(list(rows))
+@app.route('/players/update')
+def update_players():
+    with db.get_connection() as conn:
+        cursor = conn.cursor()
         
+        players_in_clan=[player['tag'] for player in cd.ClashData().get_clan_members()]
+
+        query = """
+        SELECT * FROM player 
+        WHERE tag NOT IN {};
+        """.format(tuple(players_in_clan))
+
+        cursor.execute(query)
+        rows= cursor.fetchall()
+
+        for p in rows:
+            print(type(p))
+            if(p[8] == 1):
+                db_player = player.Player(tag=p[2])
+                #Check for clan if exists and get id to insert, else get clan and insert new clan then add id to player clan
+                if db_player.clan != -1:
+                    clan_query = "SELECT * FROM clan WHERE tag = %s"
+                    result = cursor.execute(clan_query, db_player.clan).fetchall()
+                    if len(result) == 0:
+                        clan_insert_query = "INSERT INTO clan(tag,name) VALUES (%s,%s)"
+                        clan = (db_player.clan,cd.ClashData().get_clan_name(tag=db_player.clan))
+                        cursor.execute(clan_insert_query,clan)
+                        cursor.commit()
+                    update_player_query = """
+                    UPDATE player
+                    SET townhall = %s , totalpowerattack = %s, actualpowerattack = %s, clan = (SELECT id from clan WHERE tag= %s), role = %s
+                    """
+                    result = cursor.execute(update_player_query, (db_player.townHallLevel, db_player.totalPowerAttack, db_player.actualPowerAttack, db_player.clan, db_player.role))
+                    conn.commit()
+                    cursor.close()
+                    return Response(f"{result} players updated")
+                else:
+                    update_player_query = """
+                    UPDATE player
+                    SET townhall = %s , totalpowerattack = %s, actualpowerattack = %s, clan = %s, role = %s
+                    WHERE tag = %s
+                    """
+                    result = cursor.execute(update_player_query, (db_player.townHallLevel, db_player.totalPowerAttack, db_player.actualPowerAttack, db_player.clan, db_player.role, p[2]))
+                    conn.commit()
+                    cursor.close()
+                    return Response(f"{result} players updated")
+
+
+
+    # with db.get_connection() as conn:
+    #     cursor = conn.cursor()
+
+    
 
         
     # members=p.Power().
