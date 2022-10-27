@@ -60,13 +60,13 @@ def update_clan_members():
         else:
             query ="""
             UPDATE player
-            SET totalpowerattack = %s, actualpowerattack = %s, townhall = %s, clan &
+            SET totalpowerattack = %s, actualpowerattack = %s, townhall = %s, clan = %s, role = %s
             WHERE tag = %s
             """
 
             for p in cd.ClashData().get_clan_members():
                 member=player.Player(tag=p['tag'])
-                cursor.execute(query,(member.totalPowerAttack,member.actualPowerAttack, member.townHallLevel,p['tag']))
+                cursor.execute(query,(member.totalPowerAttack,member.actualPowerAttack, member.townHallLevel,1,member.role,p['tag']))
 
             conn.commit()
             cursor.close()
@@ -118,7 +118,7 @@ def update_players():
                     conn.commit()
                     cursor.close()
                     return Response(f"{result} players updated")
-
+        return Response("Nothing to update")
 
 
     # with db.get_connection() as conn:
