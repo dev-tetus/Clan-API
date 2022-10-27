@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, Response
 import os
 import sys
@@ -120,14 +121,25 @@ def update_players():
                     return Response(f"{result} players updated")
         return Response("Nothing to update")
 
-
-    # with db.get_connection() as conn:
-    #     cursor = conn.cursor()
-
+@app.route('/clan/player/<string:name>/vote', methods=['POST'])
+def add_player_vote(name):
+    query = "UPDATE player SET numvotes = numvotes + 1, has_voted = 1 WHERE username = %s and has_voted = 0"
+    with db.get_connection() as conn:
+        cursor = conn.cursor()
+        result = cursor.execute(query,name)
+        conn.commit()
+        cursor.close()
+        return Response(f"Vote to player with name = {name} added" if result > 0 else f"{name} already voted")
     
-
-        
-    # members=p.Power().
+@app.route('/clan/player/votes/reset', methods=['POST'])
+def clan_votes_reset():
+    with db.get_connection() as conn:
+        cursor = conn.cursor()
+        query = "UPDATE player SET has_voted = 0"
+        cursor.execute(query)
+        conn.commit()
+        cursor.close()
+        return Response(f"Votes reset")
 
       
         
