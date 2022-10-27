@@ -19,7 +19,7 @@ def get_credentials():
         'buildings_csv': content[8].split(' ')[1].strip(),
         'texts_csv': content[9].split(' ')[1].strip(),
         'pets_csv': content[10].split(' ')[1].strip(),
-        'mysql_ip' : content[11].split(' ')[1].strip(),
+        'db_ip' : content[11].split(' ')[1].strip(),
         'db_user' : content[12].split(' ')[1].strip(),
         'db_pass' : content[13].split(' ')[1].strip(),
     }

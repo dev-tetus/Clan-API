@@ -12,6 +12,6 @@ def get_connection():
                                 db='sn3t',
                                 charset='utf8mb4')
         print('Conexion correcta')
-        #return conexion
+        return conexion
     except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
         print("Error while connecting", e)
