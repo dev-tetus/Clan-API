@@ -1,14 +1,10 @@
-import sys
-import pyperclip
 from selenium import webdriver
-
-
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.edge.options import Options as EdgeOptions
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.edge.service import Service as EdgeService
-from selenium.webdriver.chromium.service import ChromiumService
+
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -103,23 +99,17 @@ def send_message(driver, text):
     webdriver.ActionChains(driver).key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
 
 def get_driver():
-    if sys.platform == 'linux':
-        print("Hello")
-        chrome_options = ChromeOptions()
-        chrome_options.add_argument("no-sandbox")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--window-size=800,600")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--headless")
-        # ser=ChromeService(executable_path="./chromedriver")
-        service = ChromiumService(executable_path="/usr/lib/chromium-browser/chromedriver", start_error_message='Service Error')
-        chrome_driver = webdriver.Chrome(service=service, options=chrome_options)
-        return chrome_driver
-    else:
-        edge_options = EdgeOptions()
-        ser = EdgeService(executable_path="./msedgedriver.exe")
+
+        # edge_options = EdgeOptions()
+        # ser = EdgeService(executable_path=shutil.which('msedgedriver'))
         # edge_options.add_experimental_option("detach", True)
-        return webdriver.Edge(service=ser, options=edge_options)
+        firefoxOptions = Options()
+        # binary = FirefoxBinary('/app/drivers/geckodriver')
+        firefoxOptions.add_argument("--headless")
+        
+        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(),options=firefoxOptions)
+        print(driver)
+        return driver
      
      
 

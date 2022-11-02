@@ -8,8 +8,7 @@ import db
 import clash_data as cd
 import power as power
 import player as player
-
-
+import message_diffusion as md
 
 
 app = Flask(__name__)
@@ -50,6 +49,26 @@ def add_clan_player():
         cursor.close()
         return Response(f"{result} players updated")
 
+@app.route('/clan/player/<string:name>/vote', methods=['POST'])
+def add_player_vote(name):
+    query = "UPDATE player SET numvotes = numvotes + 1, has_voted = 1 WHERE username = %s and has_voted = 0"
+    with db.get_connection() as conn:
+        cursor = conn.cursor()
+        result = cursor.execute(query,name)
+        conn.commit()
+        cursor.close()
+        return Response(f"Vote to player with name = {name} added" if result > 0 else f"{name} already voted")
+    
+@app.route('/clan/player/votes/reset', methods=['POST'])
+def clan_votes_reset():
+    with db.get_connection() as conn:
+        cursor = conn.cursor()
+        query = "UPDATE player SET has_voted = 0"
+        cursor.execute(query)
+        conn.commit()
+        cursor.close()
+        return Response(f"Votes reset")
+        
 @app.route('/clan/members/update')
 def update_clan_members():
     with db.get_connection() as conn:
@@ -154,29 +173,16 @@ def update_players():
             
         return Response("Done")
 
-@app.route('/clan/player/<string:name>/vote', methods=['POST'])
-def add_player_vote(name):
-    query = "UPDATE player SET numvotes = numvotes + 1, has_voted = 1 WHERE username = %s and has_voted = 0"
-    with db.get_connection() as conn:
-        cursor = conn.cursor()
-        result = cursor.execute(query,name)
-        conn.commit()
-        cursor.close()
-        return Response(f"Vote to player with name = {name} added" if result > 0 else f"{name} already voted")
     
-@app.route('/clan/player/votes/reset', methods=['POST'])
-def clan_votes_reset():
-    with db.get_connection() as conn:
-        cursor = conn.cursor()
-        query = "UPDATE player SET has_voted = 0"
-        cursor.execute(query)
-        conn.commit()
-        cursor.close()
-        return Response(f"Votes reset")
-
-      
-        
-    
+@app.route('/clan/diffusion/send')
+def send_diffusion():
+    try:
+        md_controller = md.MessageDiffusion()
+        md_controller.start_diffusion()
+        return Response("Message sent to servers...")
+    except KeyError as e:
+        print(e)
+        return e
 
 
 
