@@ -1,5 +1,6 @@
 from crypt import methods
-from flask import Flask, Response
+import time 
+from flask import Flask, Response, request
 import os
 import sys
 sys.path.insert(1, os.getcwd()+str("/classes"))
@@ -35,6 +36,19 @@ def update_clan():
         ON p.clan = clan.id
         SET totalpowerattack = total,
         actualpowerattack = actual"""
+
+@app.route('/clan/player/add',methods=['POST'])
+def add_clan_player():
+    with db.get_connection() as conn:
+        query = "INSERT INTO player(username, tag, joindate, townhall,totalpowerattack,actualpowerattack,clan,role) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        data = request.get_json(force=True)
+        p = player.Player(tag=data['tag'])
+        print(data)
+        cursor = conn.cursor()
+        result = cursor.execute(query, (data['username'], data['tag'].replace("%23","#"),time.strftime('%Y-%m-%d %H:%M:%S'),p.townHallLevel,p.totalPowerAttack,p.actualPowerAttack,1,p.role) )
+        conn.commit()
+        cursor.close()
+        return Response(f"{result} players updated")
 
 @app.route('/clan/members/update')
 def update_clan_members():
@@ -89,26 +103,24 @@ def update_players():
         rows= cursor.fetchall()
 
         for p in rows:
-            print(type(p))
+            db_player = player.Player(tag=p[2])
             if(p[8] == 1):
-                db_player = player.Player(tag=p[2])
                 #Check for clan if exists and get id to insert, else get clan and insert new clan then add id to player clan
                 if db_player.clan != -1:
                     clan_query = "SELECT * FROM clan WHERE tag = %s"
-                    result = cursor.execute(clan_query, db_player.clan).fetchall()
-                    if len(result) == 0:
+                    result = cursor.execute(clan_query, db_player.clan)
+                    if result == 0:
                         clan_insert_query = "INSERT INTO clan(tag,name) VALUES (%s,%s)"
                         clan = (db_player.clan,cd.ClashData().get_clan_name(tag=db_player.clan))
                         cursor.execute(clan_insert_query,clan)
-                        cursor.commit()
+
                     update_player_query = """
                     UPDATE player
                     SET townhall = %s , totalpowerattack = %s, actualpowerattack = %s, clan = (SELECT id from clan WHERE tag= %s), role = %s
+                    where tag = %s
                     """
-                    result = cursor.execute(update_player_query, (db_player.townHallLevel, db_player.totalPowerAttack, db_player.actualPowerAttack, db_player.clan, db_player.role))
+                    result = cursor.execute(update_player_query, (db_player.townHallLevel, db_player.totalPowerAttack, db_player.actualPowerAttack, db_player.clan, db_player.role,p[2]))
                     conn.commit()
-                    cursor.close()
-                    return Response(f"{result} players updated")
                 else:
                     update_player_query = """
                     UPDATE player
@@ -117,9 +129,30 @@ def update_players():
                     """
                     result = cursor.execute(update_player_query, (db_player.townHallLevel, db_player.totalPowerAttack, db_player.actualPowerAttack, db_player.clan, db_player.role, p[2]))
                     conn.commit()
-                    cursor.close()
-                    return Response(f"{result} players updated")
-        return Response("Nothing to update")
+            else:
+                
+                if(db_player.clan == -1):
+                    update_player_query = """
+                        UPDATE player
+                        SET townhall = %s , totalpowerattack = %s, actualpowerattack = %s, clan = %s, role = %s
+                        WHERE tag = %s
+                        """
+                    result = cursor.execute(update_player_query, (db_player.townHallLevel, db_player.totalPowerAttack, db_player.actualPowerAttack, db_player.clan, db_player.role, p[2]))
+                    conn.commit()
+                else:  
+                    update_player_query = """
+                    UPDATE player
+                    SET townhall = %s , totalpowerattack = %s, actualpowerattack = %s, clan =(SELECT id from clan WHERE tag like %s), role = %s
+                    WHERE tag = %s
+                    """
+                    result = cursor.execute(update_player_query, (db_player.townHallLevel, db_player.totalPowerAttack, db_player.actualPowerAttack, db_player.clan, db_player.role, p[2]))
+                    conn.commit()
+
+
+
+        cursor.close()
+            
+        return Response("Done")
 
 @app.route('/clan/player/<string:name>/vote', methods=['POST'])
 def add_player_vote(name):
