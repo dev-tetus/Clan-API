@@ -16,9 +16,8 @@ class ClashData():
             'Authorization': 'Bearer {api}'.format(api=self.credentials["api_key"])
         }
     def get_clan_name(self,tag):
-        reponse = requests.get(f'{self.credentials["base_url"]}/clans/{tag.replace("#","%23")}', headers=self.headers)
-
-        return response.json().name
+        response = requests.get(f'{self.credentials["base_url"]}/clans/{tag.replace("#","%23")}', headers=self.headers)
+        return response.json()['name']
 
     def get_player_role(self,tag):
         response = requests.get(f'{self.credentials["base_url"]}/players/{tag.replace("#","%23")}', headers=self.headers)
