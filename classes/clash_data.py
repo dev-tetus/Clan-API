@@ -116,7 +116,30 @@ class ClashData():
         # print(player_troop_levels_dataframe)
         return player_troop_levels_dataframe
 
-        
+    def get_league_war_tags(self):
+        response= requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}/currentwar/leaguegroup', headers=self.headers)
+        war_tags =[war_tags for sublist in response.json()['rounds'] for war_tags in sublist['warTags']]
+        return war_tags
+    
+    def get_clan_league_war_tags(self, league_tags):
+        clan_league_tags = []
+        for tag in league_tags:
+            if tag != '#0':
+                response= requests.get(f'{self.credentials["base_url"]}/clanwarleagues/wars/{tag.replace("#","%23")}', headers=self.headers)
+                if response.json()['clan']['name'] == "SN3T" or response.json()['opponent']['name'] == "SN3T":
+                    clan_league_tags.append(tag)
+        return clan_league_tags
+
+    def get_league_season(self):
+        response= requests.get(f'{self.credentials["base_url"]}/clans/{self.credentials["clan_tag"]}/currentwar/leaguegroup', headers=self.headers)
+        if 'season' in response.json():
+            return response.json()['season']
+        return None
+
+    def get_league_war_info(self,tag):
+        response= requests.get(f'{self.credentials["base_url"]}/clanwarleagues/wars/{tag.replace("#","%23")}', headers=self.headers)
+        return response.json()
+
 #Debug
 if __name__ == '__main__':
     cd = ClashData()
