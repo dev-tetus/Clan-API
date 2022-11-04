@@ -1,6 +1,7 @@
 from crypt import methods
 import time 
 from flask import Flask, Response, request
+import datetime
 import os
 import sys
 sys.path.insert(1, os.getcwd()+str("/classes"))
@@ -106,6 +107,90 @@ def update_clan_members():
             cursor.close()
             return Response(f"Players updated...")
 
+@app.route('/clan/league/add')
+def add_clan_league():
+    pass
+@app.route('/clan/league/wars/update')
+def update_league_wars():
+    data = cd.ClashData()
+    league_war_tags = data.get_league_war_tags()
+    clan_league_wars = data.get_clan_league_war_tags(league_war_tags)
+    
+    #Check if current league season is in db
+    league_season_query = "SELECT * FROM league_season where season = %s"
+
+    with db.get_connection() as conn:
+        league_season = data.get_league_season()
+        cursor = conn.cursor()
+        league_season_db = cursor.execute(league_season_query, league_season)
+        current_season_league = cursor.fetchone()
+
+        if league_season is not None:                                           # if clan is in league
+            if league_season_db == 0:                                           # if league season is not already saved
+                add_league_season_query = "INSERT INTO league_season(season) VALUES(%s)"
+                cursor.execute(add_league_season_query, league_season)
+                conn.commit()
+
+            for i,tag in enumerate(clan_league_wars):
+                if cursor.execute("SELECT * FROM leaguewar WHERE war_tag = %s", tag) == 0:
+                    add_war_query = "INSERT INTO leaguewar(season, day, war_tag) VALUES(%s,%s,%s)"
+                    cursor.execute(add_war_query, (current_season_league[0],i+1,tag ))
+                    conn.commit()
+
+                war = data.get_league_war_info(tag)
+                cursor.execute("SELECT id FROM leaguewar WHERE war_tag = %s", tag)
+                war_id = cursor.fetchone()[0]
+
+                if war['clan'] == 'SN3T':
+                    clan_data = war['clan']
+                    opponent_data = war['opponent']
+                else:
+                    clan_data = war['opponent']
+                    opponent_data = war['clan']
+
+                for member in clan_data['members']:
+                    member_war_attack_query = "SELECT * FROM leagueattack WHERE war_id = %s and player_id = (SELECT id from player where tag = %s)"
+                    if cursor.execute(member_war_attack_query, (war_id, member['tag'])) == 0: #No attacks registered in db
+                        if 'attacks' in member:
+                            attacks = member['attacks'][0]
+                            add_member_attack_query = "INSERT into leagueattack(war_id, player_id, player, op_tag, stars, destructionpercentage, duration, op_townhall_level, has_attacked) VALUES(%s,(SELECT id from player where tag =%s) ,(SELECT username from player where tag =%s), %s, %s, %s, %s, %s,1)"
+                            result = cursor.execute(add_member_attack_query,(war_id, member['tag'],
+                                                                    member['tag'],
+                                                                    attacks['defenderTag'],
+                                                                    attacks['stars'],
+                                                                    attacks['destructionPercentage'],
+                                                                    attacks['duration'],
+                                                                    next(opponent['townhallLevel'] for opponent in opponent_data['members'] if opponent["tag"] == attacks['defenderTag'])
+                                                                    ))
+                            conn.commit()
+                            print(f'{result} player attack added')
+                        else:
+                            add_member_without_attack_query = "INSERT INTO leagueattack(war_id, player_id, player) VALUES(%s,(SELECT id from player where tag =%s) ,(SELECT username FROM player WHERE tag = %s))"
+                            result = cursor.execute(add_member_without_attack_query,(war_id, member['tag'],member['tag']))
+                            conn.commit()
+                            print(f'{result} empty player attack added')
+                    else:
+                        member_war_attack = cursor.fetchone()
+                        if member_war_attack[8] == 0:
+                            if 'attacks' in member:
+                                attacks = member['attacks'][0]
+                                update_member_attack_query = "UPDATE leagueattack SET op_tag=%s, stars=%s, destructionpercentage=%s, duration=%s, op_townhall_leverl=%s, has_attacked=1"
+                                cursor.execute(update_member_attack_query,(attacks['defenderTag'],
+                                                                    attacks['stars'],
+                                                                    attacks['destructionPercentage'],
+                                                                    attacks['duration'],
+                                                                    next(opponent['townhallLevel'] for opponent in opponent_data['members'] if opponent["tag"] == attacks['defenderTag'])
+                                                                    ))
+                                conn.commit()
+                                print(f'{result} player attack updated')
+            cursor.close()
+            return Response("Success")
+
+                
+
+        else:
+            return  Response("Clan not in league this season")
+        
 @app.route('/players/update')
 def update_players():
     with db.get_connection() as conn:
